@@ -47,6 +47,7 @@ public:
   uint16_t getInt16(int16_t *data);
   uint16_t getUInt8(uint8_t *data);
   uint16_t getInt8(int8_t *data);
+  uint16_t getBool(bool *data);
   uint16_t getFloat(float *data);
   uint16_t getBytes(uint8_t *data, size_t amount);
   uint16_t processHeader(void);

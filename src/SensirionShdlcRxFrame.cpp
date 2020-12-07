@@ -87,6 +87,15 @@ uint16_t SensirionShdlcRxFrame::getInt8(int8_t *data) {
   return NO_ERROR;
 }
 
+uint16_t SensirionShdlcRxFrame::getBool(bool *data) {
+  dataLength -= 1;
+  if (dataLength < 0) {
+    return TODO_ERROR;
+  }
+  *data = (bool)unstuffByte();
+  return NO_ERROR;
+}
+
 uint16_t SensirionShdlcRxFrame::getFloat(float *data) {
   union {
     uint32_t uInt32Data;

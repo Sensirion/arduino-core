@@ -47,6 +47,7 @@ public:
   uint16_t addInt16(int16_t data);
   uint16_t addUInt8(uint8_t data);
   uint16_t addInt8(int8_t data);
+  uint16_t addBool(bool data);
   uint16_t addFloat(float data);
   uint16_t addBytes(uint8_t *data, size_t dataLength);
   uint16_t begin(uint8_t command, uint8_t address, uint8_t dataLength);

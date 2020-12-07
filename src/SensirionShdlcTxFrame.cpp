@@ -79,7 +79,12 @@ uint16_t SensirionShdlcTxFrame::addUInt8(uint8_t data) {
   checksum += data;
   return NO_ERROR;
 }
+
 uint16_t SensirionShdlcTxFrame::addInt8(int8_t data) {
+  return addUInt8((uint8_t)data);
+}
+
+uint16_t SensirionShdlcTxFrame::addBool(bool data) {
   return addUInt8((uint8_t)data);
 }
 
