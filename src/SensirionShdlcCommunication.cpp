@@ -38,8 +38,8 @@ uint16_t SensirionShdlcCommunication::begin(class Stream *serial) {
 uint16_t
 SensirionShdlcCommunication::sendFrame(class SensirionShdlcTxFrame &frame) {
   size_t writtenBytes = serial->write(&frame.buffer[0], frame.index);
-  if (writtenBytes != frame.index) {
-    return WRITE_ERROR;
+  if (writtenBytes < frame.index) {
+    return WRITE_ERROR | SERIAL_ERROR | NOT_ALL_BYTES_WRITTEN;
   }
   return NO_ERROR;
 }
@@ -47,25 +47,25 @@ SensirionShdlcCommunication::sendFrame(class SensirionShdlcTxFrame &frame) {
 uint16_t
 SensirionShdlcCommunication::receiveFrame(class SensirionShdlcRxFrame &frame) {
   if (frame.isFilled) {
-    return NONEMPTY_FRAME_ERROR;
+    return READ_ERROR | DRIVER_ERROR | FRAME_NOT_EMPTY;
   }
   if (!serial->available()) {
-    return NO_DATA_ERROR;
+    return READ_ERROR | SERIAL_ERROR | NO_DATA_AVAILIBLE;
   }
   if (!frame.bufferSize) {
-    return TODO_ERROR;
+    return READ_ERROR | DRIVER_ERROR | BUFFER_OVERFLOW;
   }
   frame.buffer[0] = serial->read();
   if (frame.buffer[0] != 0x7e) {
-    return FRAME_START_BYTE_ERROR;
+    return READ_ERROR | FRAME_ERROR | START_BYTE;
   }
   size_t readBytes =
       serial->readBytesUntil(0x7e, &frame.buffer[1], frame.bufferSize - 1);
   if (!readBytes) {
-    return READ_ERROR;
+    return READ_ERROR | SERIAL_ERROR | NO_DATA_READ;
   }
   if (readBytes + 1 >= frame.bufferSize) {
-    return BUFFER_SIZE_ERROR;
+    return READ_ERROR | SERIAL_ERROR | TOO_MUCH_DATA_READ;
   }
   frame.buffer[readBytes + 1] = 0x7e;
   frame.isFilled = true;

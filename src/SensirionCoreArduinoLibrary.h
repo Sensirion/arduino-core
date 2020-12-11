@@ -31,14 +31,34 @@
 #ifndef _SENSIRION_CORE_ARDUINO_LIBRARY_H_
 #define _SENSIRION_CORE_ARDUINO_LIBRARY_H_
 
-#define NO_ERROR 0
-#define TODO_ERROR 256 // Error code for not yet defined errors.
-#define WRITE_ERROR 1
-#define NONEMPTY_FRAME_ERROR 2
-#define FRAME_START_BYTE_ERROR 4
-#define BUFFER_SIZE_ERROR 8
-#define READ_ERROR 16
-#define NO_DATA_ERROR 32
+static const uint16_t NO_ERROR = 0x0000;
+
+static const uint16_t TODO_ERROR = 0xf000; // Error code for not yet defined errors.
+
+// USER LEVEL ERRORS:
+static const uint16_t WRITE_ERROR = 0x1000;
+static const uint16_t READ_ERROR = 0x2000;
+
+// LOWER LEVEL ERRORS:
+static const uint16_t SERIAL_ERROR = 0x0100;
+static const uint16_t FRAME_ERROR = 0x0200;
+static const uint16_t DEVICE_ERROR = 0x0300;
+static const uint16_t DRIVER_ERROR = 0x0400;
+
+// WRITE_ERROR->SERIAL_ERROR:
+static const uint16_t NOT_ALL_BYTES_WRITTEN = 0x0001;
+
+// READ_ERROR->DRIVER_ERROR:
+static const uint16_t FRAME_NOT_EMPTY = 0x0001;
+static const uint16_t BUFFER_OVERFLOW = 0x0002;
+
+// READ_ERROR->FRAME_ERROR:
+static const uint16_t START_BYTE = 0x0001;
+
+// READ_ERROR->SERIAL_ERROR:
+static const uint16_t NO_DATA_AVAILIBLE = 0x0001;
+static const uint16_t NO_DATA_READ = 0x0002;
+static const uint16_t TOO_MUCH_DATA_READ = 0x0004;
 
 #include "SensirionShdlcCommunication.h"
 #include "SensirionShdlcRxFrame.h"
