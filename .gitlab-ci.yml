@@ -1,0 +1,10 @@
+stages:
+  - test
+
+compile_test:
+    stage: test
+    image:
+        name: registry.gitlab.sensirion.lokal/sensirion/docker/docker-arduino:0.4.0
+    tags: [docker, linux]
+    script:
+        - tests/compile_test.py -s examples/AllCommands/
