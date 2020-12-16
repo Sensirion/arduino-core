@@ -56,14 +56,14 @@ class SensirionShdlcRxFrame {
     void interpretError(uint16_t error);
 
   private:
-    uint8_t* buffer;
-    size_t bufferSize;
-    int16_t dataLength;
-    size_t index;
-    uint8_t checksum;
-    bool isFilled;
+    uint8_t* _buffer;
+    size_t _bufferSize;
+    int16_t _dataLength;
+    size_t _index;
+    uint8_t _checksum;
+    bool _isFilled;
 
-    uint8_t unstuffByte(void);
+    uint8_t _unstuffByte(void);
 };
 
 #endif /* SENSIRION_SHDLC_RX_FRAME_H_ */

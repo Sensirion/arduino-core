@@ -56,11 +56,11 @@ class SensirionShdlcTxFrame {
     void interpretError(uint16_t error);
 
   private:
-    uint8_t* buffer;
-    size_t bufferSize;
-    size_t index;
-    uint8_t checksum;
-    bool isFinished;
+    uint8_t* _buffer;
+    size_t _bufferSize;
+    size_t _index;
+    uint8_t _checksum;
+    bool _isFinished;
 };
 
 #endif /* SENSIRION_SHDLC_TX_FRAME_H_ */
