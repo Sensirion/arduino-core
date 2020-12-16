@@ -37,30 +37,30 @@
 
 class SensirionShdlcTxFrame {
 
-  friend class SensirionShdlcCommunication;
+    friend class SensirionShdlcCommunication;
 
-public:
-  SensirionShdlcTxFrame(uint8_t *buffer, size_t bufferSize);
-  uint16_t addUInt32(uint32_t data);
-  uint16_t addInt32(int32_t data);
-  uint16_t addUInt16(uint16_t data);
-  uint16_t addInt16(int16_t data);
-  uint16_t addUInt8(uint8_t data);
-  uint16_t addInt8(int8_t data);
-  uint16_t addBool(bool data);
-  uint16_t addFloat(float data);
-  uint16_t addBytes(uint8_t *data, size_t dataLength);
-  uint16_t begin(uint8_t command, uint8_t address, uint8_t dataLength);
-  uint16_t finish(void);
-  uint16_t reset(void);
-  void interpretError(uint16_t error);
+  public:
+    SensirionShdlcTxFrame(uint8_t* buffer, size_t bufferSize);
+    uint16_t addUInt32(uint32_t data);
+    uint16_t addInt32(int32_t data);
+    uint16_t addUInt16(uint16_t data);
+    uint16_t addInt16(int16_t data);
+    uint16_t addUInt8(uint8_t data);
+    uint16_t addInt8(int8_t data);
+    uint16_t addBool(bool data);
+    uint16_t addFloat(float data);
+    uint16_t addBytes(uint8_t* data, size_t dataLength);
+    uint16_t begin(uint8_t command, uint8_t address, uint8_t dataLength);
+    uint16_t finish(void);
+    uint16_t reset(void);
+    void interpretError(uint16_t error);
 
-private:
-  uint8_t *buffer;
-  size_t bufferSize;
-  size_t index;
-  uint8_t checksum;
-  bool isFinished;
+  private:
+    uint8_t* buffer;
+    size_t bufferSize;
+    size_t index;
+    uint8_t checksum;
+    bool isFinished;
 };
 
 #endif /* SENSIRION_SHDLC_TX_FRAME_H_ */

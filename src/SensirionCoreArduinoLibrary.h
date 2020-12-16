@@ -32,7 +32,7 @@
 #define _SENSIRION_CORE_ARDUINO_LIBRARY_H_
 
 #define NO_ERROR 0
-#define TODO_ERROR 256 // Error code for not yet defined errors.
+#define TODO_ERROR 256  // Error code for not yet defined errors.
 #define WRITE_ERROR 1
 #define NONEMPTY_FRAME_ERROR 2
 #define FRAME_START_BYTE_ERROR 4
