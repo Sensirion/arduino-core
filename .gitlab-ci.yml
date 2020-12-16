@@ -1,4 +1,5 @@
 stages:
+  - validate
   - test
 
 compile_test:
@@ -8,3 +9,16 @@ compile_test:
     tags: [docker, linux]
     script:
         - tests/compile_test.py -s examples/AllCommands/
+
+syntax_check:
+  stage: validate
+  image:
+      name: registry.gitlab.sensirion.lokal/sensirion/docker/docker-python:3.8-20.04-2.3.0
+  tags: [linux, docker]
+  before_script:
+    # For performance and stability reasons, use offline installation.
+    - pip install --no-index --find-links=/pip editorconfig-checker
+    - pip install flake8
+  script:
+    - editorconfig-checker
+    - flake8
