@@ -40,16 +40,16 @@ class SensirionShdlcRxFrame {
     friend class SensirionShdlcCommunication;
 
   public:
-    SensirionShdlcRxFrame(uint8_t* buffer, size_t bufferSize);
-    uint16_t getUInt32(uint32_t* data);
-    uint16_t getInt32(int32_t* data);
-    uint16_t getUInt16(uint16_t* data);
-    uint16_t getInt16(int16_t* data);
-    uint16_t getUInt8(uint8_t* data);
-    uint16_t getInt8(int8_t* data);
-    uint16_t getBool(bool* data);
-    uint16_t getFloat(float* data);
-    uint16_t getBytes(uint8_t* data, size_t amount);
+    SensirionShdlcRxFrame(uint8_t buffer[], size_t bufferSize);
+    uint16_t getUInt32(uint32_t& data);
+    uint16_t getInt32(int32_t& data);
+    uint16_t getUInt16(uint16_t& data);
+    uint16_t getInt16(int16_t& data);
+    uint16_t getUInt8(uint8_t& data);
+    uint16_t getInt8(int8_t& data);
+    uint16_t getBool(bool& data);
+    uint16_t getFloat(float& data);
+    uint16_t getBytes(uint8_t data[], size_t amount);
     uint16_t processHeader(void);
     uint16_t processTail(void);
     void reset(void);

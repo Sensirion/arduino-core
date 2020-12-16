@@ -54,14 +54,14 @@ void loop() {
 
     error |= rxFrame.processHeader();
 
-    error |= rxFrame.getUInt32(&mockUInt32);
-    error |= rxFrame.getInt32(&mockInt32);
-    error |= rxFrame.getUInt16(&mockUInt16);
-    error |= rxFrame.getInt16(&mockInt16);
-    error |= rxFrame.getUInt8(&mockUInt8);
-    error |= rxFrame.getInt8(&mockInt8);
-    error |= rxFrame.getFloat(&mockFloat);
-    error |= rxFrame.getBytes(&mockBytes[0], 4);
+    error |= rxFrame.getUInt32(mockUInt32);
+    error |= rxFrame.getInt32(mockInt32);
+    error |= rxFrame.getUInt16(mockUInt16);
+    error |= rxFrame.getInt16(mockInt16);
+    error |= rxFrame.getUInt8(mockUInt8);
+    error |= rxFrame.getInt8(mockInt8);
+    error |= rxFrame.getFloat(mockFloat);
+    error |= rxFrame.getBytes(mockBytes, 4);
 
     error |= rxFrame.processTail();
 
