@@ -29,7 +29,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <SensirionShdlcRxFrame.h>
+#include "SensirionShdlcRxFrame.h"
+
+#include <stdint.h>
+
+#include "SensirionErrors.h"
 
 SensirionShdlcRxFrame::SensirionShdlcRxFrame(uint8_t* buffer, size_t bufferSize)
     : buffer(buffer), bufferSize(bufferSize) {

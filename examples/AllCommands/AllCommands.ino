@@ -6,11 +6,9 @@ uint8_t rxBuffer[256];
 
 SensirionShdlcTxFrame txFrame(txBuffer, 256);
 SensirionShdlcRxFrame rxFrame(rxBuffer, 256);
-SensirionShdlcCommunication hardwareCom;
 
 void setup() {
     Serial.begin(115200);
-    hardwareCom.begin(&Serial);
 }
 
 void loop() {
@@ -48,11 +46,11 @@ void loop() {
 
     error |= txFrame.finish();
 
-    error |= hardwareCom.sendFrame(txFrame);
+    error |= SensirionShdlcCommunication::sendFrame(txFrame, Serial);
 
     error |= txFrame.reset();
 
-    error |= hardwareCom.receiveFrame(rxFrame);
+    error |= SensirionShdlcCommunication::receiveFrame(rxFrame, Serial);
 
     error |= rxFrame.processHeader();
 

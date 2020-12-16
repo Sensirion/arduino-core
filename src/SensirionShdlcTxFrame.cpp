@@ -31,6 +31,10 @@
 
 #include "SensirionShdlcTxFrame.h"
 
+#include <stdint.h>
+
+#include "SensirionErrors.h"
+
 SensirionShdlcTxFrame::SensirionShdlcTxFrame(uint8_t* buffer, size_t bufferSize)
     : buffer(buffer), bufferSize(bufferSize) {
     checksum = 0;

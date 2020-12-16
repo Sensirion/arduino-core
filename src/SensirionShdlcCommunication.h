@@ -31,21 +31,20 @@
 #ifndef SENSIRION_SHDLC_COMMUNICATION_H_
 #define SENSIRION_SHDLC_COMMUNICATION_H_
 
-#include "Arduino.h"
-#include "SensirionCoreArduinoLibrary.h"
-#include "SensirionShdlcRxFrame.h"
-#include "SensirionShdlcTxFrame.h"
 #include <stdint.h>
 
+#include "Arduino.h"
+
+#include "SensirionShdlcRxFrame.h"
+#include "SensirionShdlcTxFrame.h"
+
+class SensirionShdlcTxFrame;
+class SensirionShdlcRxFrame;
+
 class SensirionShdlcCommunication {
-
   public:
-    uint16_t begin(class Stream* serial);
-    uint16_t sendFrame(class SensirionShdlcTxFrame& frame);
-    uint16_t receiveFrame(class SensirionShdlcRxFrame& frame);
-
-  private:
-    Stream* serial;
+    static uint16_t sendFrame(SensirionShdlcTxFrame& frame, Stream& serial);
+    static uint16_t receiveFrame(SensirionShdlcRxFrame& frame, Stream& serial);
 };
 
 #endif /* SENSIRION_SHDLC_COMMUNICATION_H_ */

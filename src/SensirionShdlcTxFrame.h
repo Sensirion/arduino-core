@@ -31,9 +31,9 @@
 #ifndef SENSIRION_SHDLC_TX_FRAME_H_
 #define SENSIRION_SHDLC_TX_FRAME_H_
 
-#include "SensirionCoreArduinoLibrary.h"
-#include "SensirionShdlcCommunication.h"
 #include <stdint.h>
+
+#include "SensirionShdlcCommunication.h"
 
 class SensirionShdlcTxFrame {
 
