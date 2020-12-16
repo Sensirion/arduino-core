@@ -42,7 +42,7 @@ void loop() {
     error |= txFrame.addBool(mockBool);
 
     uint8_t mockBytes[] = {42, 42, 42, 42};
-    error |= txFrame.addBytes(&mockBytes[0], 4);
+    error |= txFrame.addBytes(mockBytes, 4);
 
     error |= txFrame.finish();
 

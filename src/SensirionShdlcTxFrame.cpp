@@ -35,7 +35,8 @@
 
 #include "SensirionErrors.h"
 
-SensirionShdlcTxFrame::SensirionShdlcTxFrame(uint8_t* buffer, size_t bufferSize)
+SensirionShdlcTxFrame::SensirionShdlcTxFrame(uint8_t buffer[],
+                                             size_t bufferSize)
     : _buffer(buffer), _bufferSize(bufferSize) {
     _checksum = 0;
     _index = 0;
@@ -102,7 +103,7 @@ uint16_t SensirionShdlcTxFrame::addFloat(float data) {
     return addUInt32(convert.uInt32Data);
 }
 
-uint16_t SensirionShdlcTxFrame::addBytes(uint8_t* data, size_t dataLength) {
+uint16_t SensirionShdlcTxFrame::addBytes(uint8_t data[], size_t dataLength) {
     uint16_t error = 0;
     for (size_t i = 0; i < dataLength; i++) {
         error |= addUInt8(data[i]);
