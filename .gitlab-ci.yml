@@ -21,6 +21,4 @@ syntax_check:
     - pip install flake8
     - apt-get update && apt-get install -yq clang-format-6.0
   script:
-    - editorconfig-checker
-    - flake8
-    - find . -type f -iregex ".*\.\(c\|h\|cpp\|ino\)" -exec clang-format-6.0 -i -style=file {} \;
+    - tests/syntax_check.sh
