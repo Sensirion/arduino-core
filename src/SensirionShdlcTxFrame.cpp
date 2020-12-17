@@ -45,7 +45,7 @@ SensirionShdlcTxFrame::SensirionShdlcTxFrame(uint8_t buffer[],
 }
 
 uint16_t SensirionShdlcTxFrame::addUInt32(uint32_t data) {
-    int16_t error = addUInt8((uint8_t)((data & 0xFF000000) >> 24));
+    uint16_t error = addUInt8((uint8_t)((data & 0xFF000000) >> 24));
     error |= addUInt8((uint8_t)((data & 0x00FF0000) >> 16));
     error |= addUInt8((uint8_t)((data & 0x0000FF00) >> 8));
     error |= addUInt8((uint8_t)((data & 0x000000FF) >> 0));
