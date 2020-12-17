@@ -53,4 +53,6 @@ enum LowLevelError : uint16_t {
     ChecksumError
 };
 
+void errorToString(uint16_t error, char errorMessage[256]);
+
 #endif /* _SENSIRION_ERRORS_ */
