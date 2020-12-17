@@ -66,7 +66,7 @@ uint16_t SensirionShdlcTxFrame::addInt16(int16_t data) {
 
 uint16_t SensirionShdlcTxFrame::addUInt8(uint8_t data) {
     if (_index + 2 > _bufferSize) {
-        return TODO_ERROR;
+        return TxFrameError | BufferSizeError;
     }
     switch (data) {
         case 0x11:
@@ -81,7 +81,7 @@ uint16_t SensirionShdlcTxFrame::addUInt8(uint8_t data) {
             _buffer[_index++] = data;
     }
     _checksum += data;
-    return NO_ERROR;
+    return NoError;
 }
 
 uint16_t SensirionShdlcTxFrame::addInt8(int8_t data) {
@@ -121,8 +121,11 @@ uint16_t SensirionShdlcTxFrame::begin(uint8_t command, uint8_t address,
 
 uint16_t SensirionShdlcTxFrame::finish(void) {
     uint16_t error = addUInt8(~_checksum);
+    if (error) {
+        return error;
+    }
     if (_index + 1 > _bufferSize) {
-        return TODO_ERROR | error;
+        return TxFrameError | BufferSizeError;
     }
     _buffer[_index++] = 0x7e;
     _isFinished = true;
@@ -133,5 +136,5 @@ uint16_t SensirionShdlcTxFrame::reset(void) {
     _isFinished = false;
     _index = 0;
     _checksum = 0;
-    return NO_ERROR;
+    return NoError;
 }
