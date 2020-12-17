@@ -38,19 +38,19 @@
 
 SensirionShdlcRxFrame::SensirionShdlcRxFrame(uint8_t buffer[],
                                              size_t bufferSize)
-    : _buffer(buffer), _bufferSize(bufferSize), _checksum(0), _dataLength(0),
-      _isFilled(false), _index(0) {
+    : _buffer(buffer), _bufferSize(bufferSize), _index(0), _dataLength(0),
+      _isFilled(false) {
 }
 
 uint16_t SensirionShdlcRxFrame::getUInt32(uint32_t& data) {
-    _dataLength -= 4;
-    if (_dataLength < 0) {
+    if (_dataLength < 4) {
         return RxFrameError | NoDataError;
     }
-    data = (uint32_t)_unstuffByte() << 24;
-    data |= (uint32_t)_unstuffByte() << 16;
-    data |= (uint32_t)_unstuffByte() << 8;
-    data |= (uint32_t)_unstuffByte();
+    data = (uint32_t)_buffer[_index++] << 24;
+    data |= (uint32_t)_buffer[_index++] << 16;
+    data |= (uint32_t)_buffer[_index++] << 8;
+    data |= (uint32_t)_buffer[_index++];
+    _dataLength -= 4;
     return NoError;
 }
 
@@ -59,12 +59,12 @@ uint16_t SensirionShdlcRxFrame::getInt32(int32_t& data) {
 }
 
 uint16_t SensirionShdlcRxFrame::getUInt16(uint16_t& data) {
-    _dataLength -= 2;
-    if (_dataLength < 0) {
+    if (_dataLength < 2) {
         return RxFrameError | NoDataError;
     }
-    data = (uint16_t)_unstuffByte() << 8;
-    data |= (uint16_t)_unstuffByte();
+    data = (uint16_t)_buffer[_index++] << 8;
+    data |= (uint16_t)_buffer[_index++];
+    _dataLength -= 2;
     return NoError;
 }
 
@@ -73,29 +73,29 @@ uint16_t SensirionShdlcRxFrame::getInt16(int16_t& data) {
 }
 
 uint16_t SensirionShdlcRxFrame::getUInt8(uint8_t& data) {
-    _dataLength -= 1;
-    if (_dataLength < 0) {
+    if (_dataLength < 1) {
         return RxFrameError | NoDataError;
     }
-    data = _unstuffByte();
+    data = _buffer[_index++];
+    _dataLength -= 1;
     return NoError;
 }
 
 uint16_t SensirionShdlcRxFrame::getInt8(int8_t& data) {
-    _dataLength -= 1;
-    if (_dataLength < 0) {
+    if (_dataLength < 1) {
         return RxFrameError | NoDataError;
     }
-    data = (int8_t)_unstuffByte();
+    data = (int8_t)_buffer[_index++];
+    _dataLength -= 1;
     return NoError;
 }
 
 uint16_t SensirionShdlcRxFrame::getBool(bool& data) {
-    _dataLength -= 1;
-    if (_dataLength < 0) {
+    if (_dataLength < 1) {
         return RxFrameError | NoDataError;
     }
-    data = (bool)_unstuffByte();
+    data = (bool)_buffer[_index++];
+    _dataLength -= 1;
     return NoError;
 }
 
@@ -110,62 +110,18 @@ uint16_t SensirionShdlcRxFrame::getFloat(float& data) {
 }
 
 uint16_t SensirionShdlcRxFrame::getBytes(uint8_t data[], size_t amount) {
-    for (size_t i = 0; i < amount; i++) {
-        _dataLength -= 1;
-        if (_dataLength < 0) {
-            return RxFrameError | NoDataError;
-        }
-        data[i] = _unstuffByte();
-    }
-    return NoError;
-}
-
-uint16_t SensirionShdlcRxFrame::processHeader(void) {
-    uint8_t start = _buffer[_index++];
-    if (start != 0x7e) {
-        return RxFrameError | StartByteError;
-    }
-    uint8_t address = _unstuffByte();
-    uint8_t command = _unstuffByte();
-    uint8_t state = _unstuffByte();
-    if (state) {
-        return DeviceError | state;
-    }
-    _dataLength = _unstuffByte();
-    return NoError;
-}
-
-uint16_t SensirionShdlcRxFrame::processTail(void) {
-    if (_dataLength != 0) {
+    if (_dataLength < amount) {
         return RxFrameError | NoDataError;
     }
-    uint8_t expectedChecksum = ~_checksum;
-    uint8_t actualChecksum = _unstuffByte();
-    if (expectedChecksum != actualChecksum) {
-        return RxFrameError | ChecksumError;
+    for (size_t i = 0; i < amount; i++) {
+        data[i] = _buffer[_index++];
     }
-    uint8_t stop = _buffer[_index];
-
-    if (stop != 0x7e) {
-        return RxFrameError | StopByteError;
-    }
+    _dataLength -= amount;
     return NoError;
 }
 
 void SensirionShdlcRxFrame::reset(void) {
     _dataLength = 0;
     _index = 0;
-    _checksum = 0;
     _isFilled = 0;
-}
-
-uint8_t SensirionShdlcRxFrame::_unstuffByte(void) {
-    uint8_t data = _buffer[_index++];
-
-    if (data == 0x7d) {
-        data = _buffer[_index++];
-        data = data ^ (1 << 5);
-    }
-    _checksum += data;
-    return data;
 }

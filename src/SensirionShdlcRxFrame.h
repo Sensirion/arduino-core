@@ -51,19 +51,17 @@ class SensirionShdlcRxFrame {
     uint16_t getBool(bool& data);
     uint16_t getFloat(float& data);
     uint16_t getBytes(uint8_t data[], size_t amount);
-    uint16_t processHeader(void);
-    uint16_t processTail(void);
     void reset(void);
 
   private:
     uint8_t* _buffer;
     size_t _bufferSize;
-    int16_t _dataLength;
     size_t _index;
-    uint8_t _checksum;
+    uint8_t _address;
+    uint8_t _command;
+    uint8_t _state;
+    uint8_t _dataLength;
     bool _isFilled;
-
-    uint8_t _unstuffByte(void);
 };
 
 #endif /* SENSIRION_SHDLC_RX_FRAME_H_ */

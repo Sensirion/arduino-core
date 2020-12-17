@@ -38,6 +38,27 @@
 #include "SensirionShdlcRxFrame.h"
 #include "SensirionShdlcTxFrame.h"
 
+static uint16_t unstuffByte(uint8_t& data, Stream& serial,
+                            unsigned long startTime,
+                            unsigned long timeoutMicros) {
+    do {
+        if (micros() - startTime > timeoutMicros) {
+            return ReadError | TimeoutError;
+        }
+    } while (!serial.available());
+    data = serial.read();
+    if (data == 0x7d) {
+        do {
+            if (micros() - startTime > timeoutMicros) {
+                return ReadError | TimeoutError;
+            }
+        } while (!serial.available());
+        data = serial.read();
+        data = data ^ (1 << 5);
+    }
+    return NoError;
+}
+
 uint16_t SensirionShdlcCommunication::sendFrame(SensirionShdlcTxFrame& frame,
                                                 Stream& serial) {
     size_t writtenBytes = serial.write(&frame._buffer[0], frame._index);
@@ -47,30 +68,87 @@ uint16_t SensirionShdlcCommunication::sendFrame(SensirionShdlcTxFrame& frame,
     return NoError;
 }
 
-uint16_t SensirionShdlcCommunication::receiveFrame(SensirionShdlcRxFrame& frame,
-                                                   Stream& serial) {
+uint16_t SensirionShdlcCommunication::receiveFrame(
+    SensirionShdlcRxFrame& frame, Stream& serial, unsigned long timeoutMicros) {
+    unsigned long startTime = micros();
+    uint16_t error;
+    uint8_t current = 0;
+
     if (frame._isFilled) {
         return ReadError | NonemptyFrameError;
     }
-    if (!serial.available()) {
-        return ReadError | NoDataAvailableError;
+
+    do {
+        if (micros() - startTime > timeoutMicros) {
+            return ReadError | TimeoutError;
+        }
+        if (!serial.available()) {
+            continue;
+        }
+        current = serial.read();
+    } while (current != 0x7e);
+    do {
+        error = unstuffByte(current, serial, startTime, timeoutMicros);
+        if (error) {
+            return error;
+        }
+    } while (current == 0x7e);
+
+    frame._address = current;
+    error = unstuffByte(frame._command, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
     }
-    if (!frame._bufferSize) {
-        return ReadError | BufferSizeError;
+    error = unstuffByte(frame._state, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
     }
-    frame._buffer[0] = serial.read();
-    if (frame._buffer[0] != 0x7e) {
-        return ReadError | StartByteError;
+    if (frame._state & 0x7F) {
+        return DeviceError | frame._state;
     }
-    size_t readBytes =
-        serial.readBytesUntil(0x7e, &frame._buffer[1], frame._bufferSize - 1);
-    if (!readBytes) {
-        return ReadError | NoDataError;
+    error = unstuffByte(frame._dataLength, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
     }
-    if (readBytes + 1 >= frame._bufferSize) {
-        return ReadError | BufferSizeError;
+
+    uint8_t checksum =
+        frame._address + frame._command + frame._state + frame._dataLength;
+
+    if (frame._dataLength > frame._bufferSize) {
+        return RxFrameError | BufferSizeError;
     }
-    frame._buffer[readBytes + 1] = 0x7e;
+
+    size_t i = 0;
+    while (i < frame._dataLength) {
+        error = unstuffByte(current, serial, startTime, timeoutMicros);
+        if (error) {
+            return error;
+        }
+        frame._buffer[i] = current;
+        checksum += current;
+        i++;
+    }
+
+    uint8_t expectedChecksum = ~checksum;
+    uint8_t actualChecksum;
+    error = unstuffByte(actualChecksum, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
+    }
+    if (expectedChecksum != actualChecksum) {
+        return ReadError | ChecksumError;
+    }
+
+    do {
+        if (micros() - startTime > timeoutMicros) {
+            return ReadError | TimeoutError;
+        }
+    } while (!serial.available());
+    uint8_t stop = serial.read();
+    if (stop != 0x7e) {
+        return ReadError | StopByteError;
+    }
+
     frame._isFilled = true;
     return NoError;
 }

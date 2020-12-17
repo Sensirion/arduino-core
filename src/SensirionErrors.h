@@ -45,12 +45,11 @@ enum HighLevelError : uint16_t {
 enum LowLevelError : uint16_t {
     SerialWriteError,
     NonemptyFrameError,
-    NoDataAvailableError,
-    BufferSizeError,
-    StartByteError,
-    StopByteError,
     NoDataError,
-    ChecksumError
+    BufferSizeError,
+    StopByteError,
+    ChecksumError,
+    TimeoutError
 };
 
 void errorToString(uint16_t error, char errorMessage[256]);
