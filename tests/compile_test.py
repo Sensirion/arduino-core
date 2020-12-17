@@ -29,7 +29,7 @@ def test_all_boards(sketch):
     for board in test_list:
         if board in (b['FQBN'] for b in board_list['boards']):
             log.info('Test compilation for board {}'.format(board))
-            command = 'arduino-cli compile  --libraries="."'\
+            command = 'arduino-cli compile  --libraries="." --warnings all'\
                       ' --fqbn {board} {sketch}'.format(board=board,
                                                         sketch=sketch)
             process = subprocess.run(command.split(), stdout=subprocess.PIPE)
