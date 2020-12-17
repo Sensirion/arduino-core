@@ -30,44 +30,44 @@
  */
 #include "SensirionShdlcCommunication.h"
 
-uint16_t SensirionShdlcCommunication::begin(class Stream *serial) {
-  this->serial = serial;
-  return NO_ERROR;
+uint16_t SensirionShdlcCommunication::begin(class Stream* serial) {
+    this->serial = serial;
+    return NO_ERROR;
 }
 
 uint16_t
-SensirionShdlcCommunication::sendFrame(class SensirionShdlcTxFrame &frame) {
-  size_t writtenBytes = serial->write(&frame.buffer[0], frame.index);
-  if (writtenBytes != frame.index) {
-    return WRITE_ERROR;
-  }
-  return NO_ERROR;
+SensirionShdlcCommunication::sendFrame(class SensirionShdlcTxFrame& frame) {
+    size_t writtenBytes = serial->write(&frame.buffer[0], frame.index);
+    if (writtenBytes != frame.index) {
+        return WRITE_ERROR;
+    }
+    return NO_ERROR;
 }
 
 uint16_t
-SensirionShdlcCommunication::receiveFrame(class SensirionShdlcRxFrame &frame) {
-  if (frame.isFilled) {
-    return NONEMPTY_FRAME_ERROR;
-  }
-  if (!serial->available()) {
-    return NO_DATA_ERROR;
-  }
-  if (!frame.bufferSize) {
-    return TODO_ERROR;
-  }
-  frame.buffer[0] = serial->read();
-  if (frame.buffer[0] != 0x7e) {
-    return FRAME_START_BYTE_ERROR;
-  }
-  size_t readBytes =
-      serial->readBytesUntil(0x7e, &frame.buffer[1], frame.bufferSize - 1);
-  if (!readBytes) {
-    return READ_ERROR;
-  }
-  if (readBytes + 1 >= frame.bufferSize) {
-    return BUFFER_SIZE_ERROR;
-  }
-  frame.buffer[readBytes + 1] = 0x7e;
-  frame.isFilled = true;
-  return NO_ERROR;
+SensirionShdlcCommunication::receiveFrame(class SensirionShdlcRxFrame& frame) {
+    if (frame.isFilled) {
+        return NONEMPTY_FRAME_ERROR;
+    }
+    if (!serial->available()) {
+        return NO_DATA_ERROR;
+    }
+    if (!frame.bufferSize) {
+        return TODO_ERROR;
+    }
+    frame.buffer[0] = serial->read();
+    if (frame.buffer[0] != 0x7e) {
+        return FRAME_START_BYTE_ERROR;
+    }
+    size_t readBytes =
+        serial->readBytesUntil(0x7e, &frame.buffer[1], frame.bufferSize - 1);
+    if (!readBytes) {
+        return READ_ERROR;
+    }
+    if (readBytes + 1 >= frame.bufferSize) {
+        return BUFFER_SIZE_ERROR;
+    }
+    frame.buffer[readBytes + 1] = 0x7e;
+    frame.isFilled = true;
+    return NO_ERROR;
 }

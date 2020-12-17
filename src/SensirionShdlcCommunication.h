@@ -39,13 +39,13 @@
 
 class SensirionShdlcCommunication {
 
-public:
-  uint16_t begin(class Stream *serial);
-  uint16_t sendFrame(class SensirionShdlcTxFrame &frame);
-  uint16_t receiveFrame(class SensirionShdlcRxFrame &frame);
+  public:
+    uint16_t begin(class Stream* serial);
+    uint16_t sendFrame(class SensirionShdlcTxFrame& frame);
+    uint16_t receiveFrame(class SensirionShdlcRxFrame& frame);
 
-private:
-  Stream *serial;
+  private:
+    Stream* serial;
 };
 
 #endif /* SENSIRION_SHDLC_COMMUNICATION_H_ */
