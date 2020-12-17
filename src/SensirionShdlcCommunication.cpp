@@ -31,6 +31,7 @@
 #include "SensirionShdlcCommunication.h"
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "Arduino.h"
 #include "SensirionErrors.h"

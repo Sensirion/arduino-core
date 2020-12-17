@@ -32,6 +32,7 @@
 #define SENSIRION_SHDLC_TX_FRAME_H_
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "SensirionShdlcCommunication.h"
 

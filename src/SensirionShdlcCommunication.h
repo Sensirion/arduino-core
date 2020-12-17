@@ -32,6 +32,7 @@
 #define SENSIRION_SHDLC_COMMUNICATION_H_
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "Arduino.h"
 

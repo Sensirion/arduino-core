@@ -32,6 +32,7 @@
 #include "SensirionShdlcTxFrame.h"
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "SensirionErrors.h"
 
