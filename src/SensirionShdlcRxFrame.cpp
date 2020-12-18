@@ -29,119 +29,122 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <SensirionShdlcRxFrame.h>
+#include "SensirionShdlcRxFrame.h"
 
-SensirionShdlcRxFrame::SensirionShdlcRxFrame(uint8_t* buffer, size_t bufferSize)
-    : buffer(buffer), bufferSize(bufferSize) {
-    checksum = 0;
-    dataLength = 0;
-    isFilled = 0;
-    index = 0;
+#include <stdint.h>
+#include <stdlib.h>
+
+#include "SensirionErrors.h"
+
+SensirionShdlcRxFrame::SensirionShdlcRxFrame(uint8_t buffer[],
+                                             size_t bufferSize)
+    : _buffer(buffer), _bufferSize(bufferSize), _checksum(0), _dataLength(0),
+      _isFilled(false), _index(0) {
 }
 
-uint16_t SensirionShdlcRxFrame::getUInt32(uint32_t* data) {
-    dataLength -= 4;
-    if (dataLength < 0) {
+uint16_t SensirionShdlcRxFrame::getUInt32(uint32_t& data) {
+    _dataLength -= 4;
+    if (_dataLength < 0) {
         return TODO_ERROR;
     }
-    *data = (uint32_t)unstuffByte() << 24;
-    *data |= (uint32_t)unstuffByte() << 16;
-    *data |= (uint32_t)unstuffByte() << 8;
-    *data |= (uint32_t)unstuffByte();
+    data = (uint32_t)_unstuffByte() << 24;
+    data |= (uint32_t)_unstuffByte() << 16;
+    data |= (uint32_t)_unstuffByte() << 8;
+    data |= (uint32_t)_unstuffByte();
     return NO_ERROR;
 }
 
-uint16_t SensirionShdlcRxFrame::getInt32(int32_t* data) {
-    return getUInt32((uint32_t*)data);
+uint16_t SensirionShdlcRxFrame::getInt32(int32_t& data) {
+    return getUInt32((uint32_t&)data);
 }
 
-uint16_t SensirionShdlcRxFrame::getUInt16(uint16_t* data) {
-    dataLength -= 2;
-    if (dataLength < 0) {
+uint16_t SensirionShdlcRxFrame::getUInt16(uint16_t& data) {
+    _dataLength -= 2;
+    if (_dataLength < 0) {
         return TODO_ERROR;
     }
-    *data = (uint16_t)unstuffByte() << 8;
-    *data |= (uint16_t)unstuffByte();
+    data = (uint16_t)_unstuffByte() << 8;
+    data |= (uint16_t)_unstuffByte();
     return NO_ERROR;
 }
 
-uint16_t SensirionShdlcRxFrame::getInt16(int16_t* data) {
-    return getUInt16((uint16_t*)data);
+uint16_t SensirionShdlcRxFrame::getInt16(int16_t& data) {
+    return getUInt16((uint16_t&)data);
 }
 
-uint16_t SensirionShdlcRxFrame::getUInt8(uint8_t* data) {
-    dataLength -= 1;
-    if (dataLength < 0) {
+uint16_t SensirionShdlcRxFrame::getUInt8(uint8_t& data) {
+    _dataLength -= 1;
+    if (_dataLength < 0) {
         return TODO_ERROR;
     }
-    *data = unstuffByte();
+    data = _unstuffByte();
     return NO_ERROR;
 }
 
-uint16_t SensirionShdlcRxFrame::getInt8(int8_t* data) {
-    dataLength -= 1;
-    if (dataLength < 0) {
+uint16_t SensirionShdlcRxFrame::getInt8(int8_t& data) {
+    _dataLength -= 1;
+    if (_dataLength < 0) {
         return TODO_ERROR;
     }
-    *data = (int8_t)unstuffByte();
+    data = (int8_t)_unstuffByte();
     return NO_ERROR;
 }
 
-uint16_t SensirionShdlcRxFrame::getBool(bool* data) {
-    dataLength -= 1;
-    if (dataLength < 0) {
+uint16_t SensirionShdlcRxFrame::getBool(bool& data) {
+    _dataLength -= 1;
+    if (_dataLength < 0) {
         return TODO_ERROR;
     }
-    *data = (bool)unstuffByte();
+    data = (bool)_unstuffByte();
     return NO_ERROR;
 }
 
-uint16_t SensirionShdlcRxFrame::getFloat(float* data) {
+uint16_t SensirionShdlcRxFrame::getFloat(float& data) {
     union {
         uint32_t uInt32Data;
         float floatData;
     } convert;
-    uint16_t error = getUInt32(&convert.uInt32Data);
-    *data = convert.floatData;
+    uint16_t error = getUInt32(convert.uInt32Data);
+    data = convert.floatData;
     return error;
 }
 
-uint16_t SensirionShdlcRxFrame::getBytes(uint8_t* data, size_t amount) {
+uint16_t SensirionShdlcRxFrame::getBytes(uint8_t data[], size_t amount) {
     for (size_t i = 0; i < amount; i++) {
-        dataLength -= 1;
-        if (dataLength < 0) {
+        _dataLength -= 1;
+        if (_dataLength < 0) {
             return TODO_ERROR;
         }
-        data[i] = unstuffByte();
+        data[i] = _unstuffByte();
     }
     return NO_ERROR;
 }
 
 uint16_t SensirionShdlcRxFrame::processHeader(void) {
-    uint8_t start = buffer[index++];
+    uint8_t start = _buffer[_index++];
     if (start != 0x7e) {
         return TODO_ERROR;
     }
-    uint8_t address = unstuffByte();
-    uint8_t command = unstuffByte();
-    uint8_t state = unstuffByte();
+    uint8_t address = _unstuffByte();
+    uint8_t command = _unstuffByte();
+    uint8_t state = _unstuffByte();
     if (state) {
         return TODO_ERROR;
     }
-    dataLength = unstuffByte();
+    _dataLength = _unstuffByte();
     return NO_ERROR;
 }
 
 uint16_t SensirionShdlcRxFrame::processTail(void) {
-    if (dataLength != 0) {
+    if (_dataLength != 0) {
         return TODO_ERROR;
     }
-    uint8_t expectedChecksum = ~checksum;
-    uint8_t actualChecksum = unstuffByte();
+    uint8_t expectedChecksum = ~_checksum;
+    uint8_t actualChecksum = _unstuffByte();
     if (expectedChecksum != actualChecksum) {
         return TODO_ERROR;
     }
-    uint8_t stop = buffer[index];
+    uint8_t stop = _buffer[_index];
 
     if (stop != 0x7e) {
         return TODO_ERROR;
@@ -150,19 +153,19 @@ uint16_t SensirionShdlcRxFrame::processTail(void) {
 }
 
 void SensirionShdlcRxFrame::reset(void) {
-    dataLength = 0;
-    index = 0;
-    checksum = 0;
-    isFilled = 0;
+    _dataLength = 0;
+    _index = 0;
+    _checksum = 0;
+    _isFilled = 0;
 }
 
-uint8_t SensirionShdlcRxFrame::unstuffByte(void) {
-    uint8_t data = buffer[index++];
+uint8_t SensirionShdlcRxFrame::_unstuffByte(void) {
+    uint8_t data = _buffer[_index++];
 
     if (data == 0x7d) {
-        data = buffer[index++];
+        data = _buffer[_index++];
         data = data ^ (1 << 5);
     }
-    checksum += data;
+    _checksum += data;
     return data;
 }

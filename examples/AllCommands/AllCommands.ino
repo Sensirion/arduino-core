@@ -6,11 +6,9 @@ uint8_t rxBuffer[256];
 
 SensirionShdlcTxFrame txFrame(txBuffer, 256);
 SensirionShdlcRxFrame rxFrame(rxBuffer, 256);
-SensirionShdlcCommunication hardwareCom;
 
 void setup() {
     Serial.begin(115200);
-    hardwareCom.begin(&Serial);
 }
 
 void loop() {
@@ -44,26 +42,26 @@ void loop() {
     error |= txFrame.addBool(mockBool);
 
     uint8_t mockBytes[] = {42, 42, 42, 42};
-    error |= txFrame.addBytes(&mockBytes[0], 4);
+    error |= txFrame.addBytes(mockBytes, 4);
 
     error |= txFrame.finish();
 
-    error |= hardwareCom.sendFrame(txFrame);
+    error |= SensirionShdlcCommunication::sendFrame(txFrame, Serial);
 
     error |= txFrame.reset();
 
-    error |= hardwareCom.receiveFrame(rxFrame);
+    error |= SensirionShdlcCommunication::receiveFrame(rxFrame, Serial);
 
     error |= rxFrame.processHeader();
 
-    error |= rxFrame.getUInt32(&mockUInt32);
-    error |= rxFrame.getInt32(&mockInt32);
-    error |= rxFrame.getUInt16(&mockUInt16);
-    error |= rxFrame.getInt16(&mockInt16);
-    error |= rxFrame.getUInt8(&mockUInt8);
-    error |= rxFrame.getInt8(&mockInt8);
-    error |= rxFrame.getFloat(&mockFloat);
-    error |= rxFrame.getBytes(&mockBytes[0], 4);
+    error |= rxFrame.getUInt32(mockUInt32);
+    error |= rxFrame.getInt32(mockInt32);
+    error |= rxFrame.getUInt16(mockUInt16);
+    error |= rxFrame.getInt16(mockInt16);
+    error |= rxFrame.getUInt8(mockUInt8);
+    error |= rxFrame.getInt8(mockInt8);
+    error |= rxFrame.getFloat(mockFloat);
+    error |= rxFrame.getBytes(mockBytes, 4);
 
     error |= rxFrame.processTail();
 

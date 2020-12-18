@@ -31,15 +31,19 @@
 
 #include "SensirionShdlcTxFrame.h"
 
-SensirionShdlcTxFrame::SensirionShdlcTxFrame(uint8_t* buffer, size_t bufferSize)
-    : buffer(buffer), bufferSize(bufferSize) {
-    checksum = 0;
-    index = 0;
-    isFinished = false;
+#include <stdint.h>
+#include <stdlib.h>
+
+#include "SensirionErrors.h"
+
+SensirionShdlcTxFrame::SensirionShdlcTxFrame(uint8_t buffer[],
+                                             size_t bufferSize)
+    : _buffer(buffer), _bufferSize(bufferSize), _checksum(0), _index(0),
+      _isFinished(false) {
 }
 
 uint16_t SensirionShdlcTxFrame::addUInt32(uint32_t data) {
-    int16_t error = addUInt8((uint8_t)((data & 0xFF000000) >> 24));
+    uint16_t error = addUInt8((uint8_t)((data & 0xFF000000) >> 24));
     error |= addUInt8((uint8_t)((data & 0x00FF0000) >> 16));
     error |= addUInt8((uint8_t)((data & 0x0000FF00) >> 8));
     error |= addUInt8((uint8_t)((data & 0x000000FF) >> 0));
@@ -61,7 +65,7 @@ uint16_t SensirionShdlcTxFrame::addInt16(int16_t data) {
 }
 
 uint16_t SensirionShdlcTxFrame::addUInt8(uint8_t data) {
-    if (index + 2 > bufferSize) {
+    if (_index + 2 > _bufferSize) {
         return TODO_ERROR;
     }
     switch (data) {
@@ -70,13 +74,13 @@ uint16_t SensirionShdlcTxFrame::addUInt8(uint8_t data) {
         case 0x7d:
         case 0x7e:
             // byte stuffing is done by inserting 0x7d and inverting bit 5
-            buffer[index++] = 0x7d;
-            buffer[index++] = data ^ (1 << 5);
+            _buffer[_index++] = 0x7d;
+            _buffer[_index++] = data ^ (1 << 5);
             break;
         default:
-            buffer[index++] = data;
+            _buffer[_index++] = data;
     }
-    checksum += data;
+    _checksum += data;
     return NO_ERROR;
 }
 
@@ -98,7 +102,7 @@ uint16_t SensirionShdlcTxFrame::addFloat(float data) {
     return addUInt32(convert.uInt32Data);
 }
 
-uint16_t SensirionShdlcTxFrame::addBytes(uint8_t* data, size_t dataLength) {
+uint16_t SensirionShdlcTxFrame::addBytes(uint8_t data[], size_t dataLength) {
     uint16_t error = 0;
     for (size_t i = 0; i < dataLength; i++) {
         error |= addUInt8(data[i]);
@@ -108,7 +112,7 @@ uint16_t SensirionShdlcTxFrame::addBytes(uint8_t* data, size_t dataLength) {
 
 uint16_t SensirionShdlcTxFrame::begin(uint8_t command, uint8_t address,
                                       uint8_t dataLength) {
-    buffer[index++] = 0x7e;
+    _buffer[_index++] = 0x7e;
     uint16_t error = addUInt8(address);
     error |= addUInt8(command);
     error |= addUInt8(dataLength);
@@ -116,18 +120,18 @@ uint16_t SensirionShdlcTxFrame::begin(uint8_t command, uint8_t address,
 }
 
 uint16_t SensirionShdlcTxFrame::finish(void) {
-    uint16_t error = addUInt8(~checksum);
-    if (index + 1 > bufferSize) {
+    uint16_t error = addUInt8(~_checksum);
+    if (_index + 1 > _bufferSize) {
         return TODO_ERROR | error;
     }
-    buffer[index++] = 0x7e;
-    isFinished = true;
+    _buffer[_index++] = 0x7e;
+    _isFinished = true;
     return error;
 }
 
 uint16_t SensirionShdlcTxFrame::reset(void) {
-    isFinished = false;
-    index = 0;
-    checksum = 0;
+    _isFinished = false;
+    _index = 0;
+    _checksum = 0;
     return NO_ERROR;
 }

@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2020, Sensirion AG
  * All rights reserved.
@@ -28,11 +29,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef _SENSIRION_CORE_ARDUINO_LIBRARY_H_
-#define _SENSIRION_CORE_ARDUINO_LIBRARY_H_
+#ifndef _SENSIRION_ERRORS_H_
+#define _SENSIRION_ERRORS_H_
 
-#include "SensirionShdlcCommunication.h"
-#include "SensirionShdlcRxFrame.h"
-#include "SensirionShdlcTxFrame.h"
+#define NO_ERROR 0
+#define TODO_ERROR 256  // Error code for not yet defined errors.
+#define WRITE_ERROR 1
+#define NONEMPTY_FRAME_ERROR 2
+#define FRAME_START_BYTE_ERROR 4
+#define BUFFER_SIZE_ERROR 8
+#define READ_ERROR 16
+#define NO_DATA_ERROR 32
 
-#endif /* _SENSIRION_CORE_ARDUION_LIBRARY_H_ */
+#endif /* _SENSIRION_ERRORS_ */
