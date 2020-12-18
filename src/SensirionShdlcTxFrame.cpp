@@ -38,10 +38,8 @@
 
 SensirionShdlcTxFrame::SensirionShdlcTxFrame(uint8_t buffer[],
                                              size_t bufferSize)
-    : _buffer(buffer), _bufferSize(bufferSize) {
-    _checksum = 0;
-    _index = 0;
-    _isFinished = false;
+    : _buffer(buffer), _bufferSize(bufferSize), _checksum(0), _index(0),
+      _isFinished(false) {
 }
 
 uint16_t SensirionShdlcTxFrame::addUInt32(uint32_t data) {

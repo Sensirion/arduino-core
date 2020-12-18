@@ -38,11 +38,8 @@
 
 SensirionShdlcRxFrame::SensirionShdlcRxFrame(uint8_t buffer[],
                                              size_t bufferSize)
-    : _buffer(buffer), _bufferSize(bufferSize) {
-    _checksum = 0;
-    _dataLength = 0;
-    _isFilled = 0;
-    _index = 0;
+    : _buffer(buffer), _bufferSize(bufferSize), _checksum(0), _dataLength(0),
+      _isFilled(false), _index(0) {
 }
 
 uint16_t SensirionShdlcRxFrame::getUInt32(uint32_t& data) {
