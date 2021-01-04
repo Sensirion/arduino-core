@@ -63,7 +63,7 @@ void errorToString(uint16_t error, char errorMessage[256]) {
                     return;
             }
         case HighLevelError::DeviceError: {
-            char format[] = "Device error, status register: %x";
+            char format[] = "Device error, status register: 0x%x";
             sprintf(errorMessage, format, lowLevelError);
             return;
         }
