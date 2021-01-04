@@ -54,7 +54,6 @@ class SensirionShdlcRxFrame {
     uint16_t processHeader(void);
     uint16_t processTail(void);
     void reset(void);
-    void interpretError(uint16_t error);
 
   private:
     uint8_t* _buffer;

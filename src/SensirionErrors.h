@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2020, Sensirion AG
  * All rights reserved.
@@ -32,13 +31,28 @@
 #ifndef _SENSIRION_ERRORS_H_
 #define _SENSIRION_ERRORS_H_
 
-#define NO_ERROR 0
-#define TODO_ERROR 256  // Error code for not yet defined errors.
-#define WRITE_ERROR 1
-#define NONEMPTY_FRAME_ERROR 2
-#define FRAME_START_BYTE_ERROR 4
-#define BUFFER_SIZE_ERROR 8
-#define READ_ERROR 16
-#define NO_DATA_ERROR 32
+#include <stdint.h>
 
-#endif /* _SENSIRION_ERRORS_ */
+enum HighLevelError : uint16_t {
+    NoError = 0,
+    WriteError = 0x0100,
+    ReadError,
+    DeviceError,
+    TxFrameError,
+    RxFrameError
+};
+
+enum LowLevelError : uint16_t {
+    SerialWriteError,
+    NonemptyFrameError,
+    NoDataAvailableError,
+    BufferSizeError,
+    StartByteError,
+    StopByteError,
+    NoDataError,
+    ChecksumError
+};
+
+void errorToString(uint16_t error, char errorMessage[256]);
+
+#endif /* _SENSIRION_ERRORS_H_ */

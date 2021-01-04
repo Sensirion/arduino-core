@@ -54,7 +54,6 @@ class SensirionShdlcTxFrame {
     uint16_t begin(uint8_t command, uint8_t address, uint8_t dataLength);
     uint16_t finish(void);
     uint16_t reset(void);
-    void interpretError(uint16_t error);
 
   private:
     uint8_t* _buffer;
