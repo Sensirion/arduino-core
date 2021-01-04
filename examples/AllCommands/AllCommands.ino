@@ -62,5 +62,12 @@ void loop() {
     error |= rxFrame.getFloat(mockFloat);
     error |= rxFrame.getBytes(mockBytes, 4);
 
+    mockCommand = rxFrame.getCommand();
+    mockAddress = rxFrame.getAddress();
+    mockDataLength = rxFrame.getDataLength();
+    uint8_t mockState = rxFrame.getState();
+    if (mockState) {
+        // There is an error in the device.
+    }
     rxFrame.reset();
 }

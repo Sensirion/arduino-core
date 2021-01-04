@@ -52,6 +52,18 @@ class SensirionShdlcRxFrame {
     uint16_t getFloat(float& data);
     uint16_t getBytes(uint8_t data[], size_t amount);
     void reset(void);
+    uint8_t getAddress(void) const {
+        return _address;
+    };
+    uint8_t getCommand(void) const {
+        return _command;
+    };
+    uint8_t getState(void) const {
+        return _state;
+    };
+    uint8_t getDataLength(void) const {
+        return _dataLength;
+    };
 
   private:
     uint8_t* _buffer;
