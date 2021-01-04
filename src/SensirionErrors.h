@@ -55,4 +55,4 @@ enum LowLevelError : uint16_t {
 
 void errorToString(uint16_t error, char errorMessage[256]);
 
-#endif /* _SENSIRION_ERRORS_ */
+#endif /* _SENSIRION_ERRORS_H_ */
