@@ -109,14 +109,18 @@ uint16_t SensirionShdlcRxFrame::getFloat(float& data) {
     return error;
 }
 
-uint16_t SensirionShdlcRxFrame::getBytes(uint8_t data[], size_t amount) {
-    if (_dataLength < amount) {
+uint16_t SensirionShdlcRxFrame::getBytes(uint8_t data[], size_t maxAmount) {
+    if (_dataLength < 1) {
         return RxFrameError | NoDataError;
     }
-    for (size_t i = 0; i < amount; i++) {
+    size_t readAmount = maxAmount;
+    if (_dataLength < maxAmount) {
+        readAmount = _dataLength;
+    }
+    for (size_t i = 0; i < readAmount; i++) {
         data[i] = _buffer[_index++];
     }
-    _dataLength -= amount;
+    _dataLength -= readAmount;
     return NoError;
 }
 
