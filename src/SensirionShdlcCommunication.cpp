@@ -38,22 +38,29 @@
 #include "SensirionShdlcRxFrame.h"
 #include "SensirionShdlcTxFrame.h"
 
-static uint16_t unstuffByte(uint8_t& data, Stream& serial,
-                            unsigned long startTime,
-                            unsigned long timeoutMicros) {
+static uint16_t readByte(uint8_t& data, Stream& serial, unsigned long startTime,
+                         unsigned long timeoutMicros) {
     do {
         if (micros() - startTime > timeoutMicros) {
             return ReadError | TimeoutError;
         }
     } while (!serial.available());
     data = serial.read();
+    return NoError;
+}
+
+static uint16_t unstuffByte(uint8_t& data, Stream& serial,
+                            unsigned long startTime,
+                            unsigned long timeoutMicros) {
+    uint16_t error = readByte(data, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
+    }
     if (data == 0x7d) {
-        do {
-            if (micros() - startTime > timeoutMicros) {
-                return ReadError | TimeoutError;
-            }
-        } while (!serial.available());
-        data = serial.read();
+        error = readByte(data, serial, startTime, timeoutMicros);
+        if (error) {
+            return error;
+        }
         data = data ^ (1 << 5);
     }
     return NoError;
@@ -79,15 +86,16 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
         return ReadError | NonemptyFrameError;
     }
 
+    // Wait for start byte and ignore all other bytes in case a partial frame
+    // is still in the receive buffer due to a previous error.
     do {
-        if (micros() - startTime > timeoutMicros) {
-            return ReadError | TimeoutError;
+        error = readByte(current, serial, startTime, timeoutMicros);
+        if (error) {
+            return error;
         }
-        if (!serial.available()) {
-            continue;
-        }
-        current = serial.read();
     } while (current != 0x7e);
+
+    // Handle a repeated start byte which may happen
     do {
         error = unstuffByte(current, serial, startTime, timeoutMicros);
         if (error) {
@@ -140,12 +148,11 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
         return ReadError | ChecksumError;
     }
 
-    do {
-        if (micros() - startTime > timeoutMicros) {
-            return ReadError | TimeoutError;
-        }
-    } while (!serial.available());
-    uint8_t stop = serial.read();
+    uint8_t stop;
+    error = readByte(stop, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
+    }
     if (stop != 0x7e) {
         return ReadError | StopByteError;
     }
