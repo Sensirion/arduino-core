@@ -72,9 +72,10 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
     SensirionShdlcRxFrame& frame, Stream& serial, unsigned long timeoutMicros) {
     unsigned long startTime = micros();
     uint16_t error;
+    uint8_t dataLength;
     uint8_t current = 0;
 
-    if (frame._isFilled) {
+    if (frame._dataLength) {
         return ReadError | NonemptyFrameError;
     }
 
@@ -106,20 +107,20 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
     if (frame._state & 0x7F) {
         return DeviceError | frame._state;
     }
-    error = unstuffByte(frame._dataLength, serial, startTime, timeoutMicros);
+    error = unstuffByte(dataLength, serial, startTime, timeoutMicros);
     if (error) {
         return error;
     }
 
     uint8_t checksum =
-        frame._address + frame._command + frame._state + frame._dataLength;
+        frame._address + frame._command + frame._state + dataLength;
 
-    if (frame._dataLength > frame._bufferSize) {
+    if (dataLength > frame._bufferSize) {
         return RxFrameError | BufferSizeError;
     }
 
     size_t i = 0;
-    while (i < frame._dataLength) {
+    while (i < dataLength) {
         error = unstuffByte(current, serial, startTime, timeoutMicros);
         if (error) {
             return error;
@@ -148,7 +149,6 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
     if (stop != 0x7e) {
         return ReadError | StopByteError;
     }
-
-    frame._isFilled = true;
+    frame._dataLength = dataLength;
     return NoError;
 }

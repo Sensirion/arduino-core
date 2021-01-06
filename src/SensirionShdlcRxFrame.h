@@ -73,7 +73,6 @@ class SensirionShdlcRxFrame {
     uint8_t _command;
     uint8_t _state;
     uint8_t _dataLength;
-    bool _isFilled;
 };
 
 #endif /* SENSIRION_SHDLC_RX_FRAME_H_ */
