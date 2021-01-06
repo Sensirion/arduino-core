@@ -82,7 +82,7 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
     uint8_t dataLength;
     uint8_t current = 0;
 
-    if (frame._dataLength) {
+    if (frame._numBytes) {
         return ReadError | NonemptyFrameError;
     }
 
@@ -157,6 +157,7 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
         return ExecutionError | frame._state;
     }
     frame._dataLength = dataLength;
+    frame._numBytes = dataLength;
     return NoError;
 }
 

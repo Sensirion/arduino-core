@@ -28,40 +28,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef SENSIRION_SHDLC_RX_FRAME_H_
-#define SENSIRION_SHDLC_RX_FRAME_H_
+#ifndef SENSIRION_I2C_RX_FRAME_H_
+#define SENSIRION_I2C_RX_FRAME_H_
 
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "SensirionI2CCommunication.h"
 #include "SensirionRxFrame.h"
-#include "SensirionShdlcCommunication.h"
 
-class SensirionShdlcRxFrame : public SensirionRxFrame {
+class SensirionI2CRxFrame : public SensirionRxFrame {
 
-    friend class SensirionShdlcCommunication;
+    friend class SensirionI2CCommunication;
 
   public:
-    SensirionShdlcRxFrame(uint8_t buffer[], size_t bufferSize)
+    SensirionI2CRxFrame(uint8_t buffer[], size_t bufferSize)
         : SensirionRxFrame(buffer, bufferSize){};
-    uint8_t getAddress(void) const {
-        return _address;
-    };
-    uint8_t getCommand(void) const {
-        return _command;
-    };
-    uint8_t getState(void) const {
-        return _state;
-    };
-    uint8_t getDataLength(void) const {
-        return _dataLength;
-    };
-
-  private:
-    uint8_t _address;
-    uint8_t _command;
-    uint8_t _state;
-    uint8_t _dataLength;
 };
 
-#endif /* SENSIRION_SHDLC_RX_FRAME_H_ */
+#endif /* SENSIRION_I2C_RX_FRAME_H_ */

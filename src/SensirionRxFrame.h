@@ -28,40 +28,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef SENSIRION_SHDLC_RX_FRAME_H_
-#define SENSIRION_SHDLC_RX_FRAME_H_
+#ifndef SENSIRION_RX_FRAME_H_
+#define SENSIRION_RX_FRAME_H_
 
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "SensirionRxFrame.h"
-#include "SensirionShdlcCommunication.h"
+class SensirionRxFrame {
 
-class SensirionShdlcRxFrame : public SensirionRxFrame {
-
+    friend class SensirionI2CCommunication;
     friend class SensirionShdlcCommunication;
 
   public:
-    SensirionShdlcRxFrame(uint8_t buffer[], size_t bufferSize)
-        : SensirionRxFrame(buffer, bufferSize){};
-    uint8_t getAddress(void) const {
-        return _address;
-    };
-    uint8_t getCommand(void) const {
-        return _command;
-    };
-    uint8_t getState(void) const {
-        return _state;
-    };
-    uint8_t getDataLength(void) const {
-        return _dataLength;
-    };
+    SensirionRxFrame(uint8_t buffer[], size_t bufferSize);
+    uint16_t getUInt32(uint32_t& data);
+    uint16_t getInt32(int32_t& data);
+    uint16_t getUInt16(uint16_t& data);
+    uint16_t getInt16(int16_t& data);
+    uint16_t getUInt8(uint8_t& data);
+    uint16_t getInt8(int8_t& data);
+    uint16_t getBool(bool& data);
+    uint16_t getFloat(float& data);
+    uint16_t getBytes(uint8_t data[], size_t amount);
 
   private:
-    uint8_t _address;
-    uint8_t _command;
-    uint8_t _state;
-    uint8_t _dataLength;
+    uint8_t* _buffer = 0;
+    size_t _bufferSize = 0;
+    size_t _index = 0;
+    size_t _numBytes = 0;
 };
 
-#endif /* SENSIRION_SHDLC_RX_FRAME_H_ */
+#endif /* SENSIRION_RX_FRAME_H_ */
