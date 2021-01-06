@@ -37,4 +37,8 @@
 #include "SensirionShdlcRxFrame.h"
 #include "SensirionShdlcTxFrame.h"
 
+#include "SensirionI2CCommunication.h"
+#include "SensirionI2CRxFrame.h"
+#include "SensirionI2CTxFrame.h"
+
 #endif /* _SENSIRION_CORE_ARDUION_LIBRARY_H_ */
