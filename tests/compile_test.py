@@ -23,7 +23,7 @@ def test_all_boards(sketch):
                              stdout=subprocess.PIPE)
     board_list_json = process.stdout.decode('utf-8')
     board_list = json.loads(board_list_json)
-    test_list = ["esp8266:esp8266:arduino-esp8266", "arduino:samd:mkrzero",
+    test_list = ["esp8266:esp8266:generic", "arduino:samd:mkrzero",
                  "arduino:avr:mega", "arduino:avr:nano", "arduino:avr:uno",
                  "esp32:esp32:esp32"]
     for board in test_list:
