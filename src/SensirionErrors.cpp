@@ -49,6 +49,9 @@ void errorToString(uint16_t error, char errorMessage[256]) {
                 case LowLevelError::SerialWriteError:
                     strcpy(errorMessage, "Error writing to serial");
                     return;
+                case LowLevelError::I2CWriteError:
+                    strcpy(errorMessage, "Error writing to I2C bus");
+                    return;
             }
         case HighLevelError::ReadError:
             switch (lowLevelError) {
@@ -60,6 +63,21 @@ void errorToString(uint16_t error, char errorMessage[256]) {
                     return;
                 case LowLevelError::ChecksumError:
                     strcpy(errorMessage, "Checksum is wrong");
+                    return;
+                case LowLevelError::CRCError:
+                    strcpy(errorMessage, "Wrong CRC found");
+                    return;
+                case LowLevelError::WrongNumberBytesError:
+                    strcpy(errorMessage, "The number of bytes to be read are "
+                                         "not a multiple of 3");
+                    return;
+                case LowLevelError::NotEnoughDataError:
+                    strcpy(errorMessage, "Not enough data received");
+                    return;
+                case LowLevelError::InternalBufferSizeError:
+                    strcpy(errorMessage,
+                           "Can't execute this command on this board, internal "
+                           "I2C buffer is too small");
                     return;
             }
         case HighLevelError::ExecutionError: {

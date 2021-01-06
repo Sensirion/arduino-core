@@ -51,7 +51,12 @@ enum LowLevelError : uint16_t {
     ChecksumError,
     TimeoutError,
     RxCommandError,
-    RxAddressError
+    RxAddressError,
+    WrongNumberBytesError,
+    CRCError,
+    I2CWriteError,
+    NotEnoughDataError,
+    InternalBufferSizeError
 };
 
 void errorToString(uint16_t error, char errorMessage[256]);
