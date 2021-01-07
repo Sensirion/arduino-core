@@ -55,21 +55,15 @@ void errorToString(uint16_t error, char errorMessage[256]) {
                 case LowLevelError::NonemptyFrameError:
                     strcpy(errorMessage, "Frame already contains data");
                     return;
-                case LowLevelError::NoDataAvailableError:
-                    strcpy(errorMessage, "No data received");
+                case LowLevelError::TimeoutError:
+                    strcpy(errorMessage, "Timeout while reading data");
                     return;
-                case LowLevelError::BufferSizeError:
-                    strcpy(errorMessage, "Not enough space in buffer");
-                    return;
-                case LowLevelError::StartByteError:
-                    strcpy(errorMessage, "First byte doesn't match start byte");
-                    return;
-                case LowLevelError::NoDataError:
-                    strcpy(errorMessage, "Only start byte received");
+                case LowLevelError::ChecksumError:
+                    strcpy(errorMessage, "Checksum is wrong");
                     return;
             }
         case HighLevelError::DeviceError: {
-            char format[] = "Device error, status register: %x";
+            char format[] = "Device error, status register: 0x%x";
             sprintf(errorMessage, format, lowLevelError);
             return;
         }
@@ -84,17 +78,8 @@ void errorToString(uint16_t error, char errorMessage[256]) {
                 case LowLevelError::BufferSizeError:
                     strcpy(errorMessage, "Not enough space in buffer");
                     return;
-                case LowLevelError::StartByteError:
-                    strcpy(errorMessage, "First byte doesn't match start byte");
-                    return;
-                case LowLevelError::StopByteError:
-                    strcpy(errorMessage, "Last byte doesn't match stop byte");
-                    return;
                 case LowLevelError::NoDataError:
                     strcpy(errorMessage, "No more data in frame");
-                    return;
-                case LowLevelError::ChecksumError:
-                    strcpy(errorMessage, "Checksum is wrong");
                     return;
             }
     }

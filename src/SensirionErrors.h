@@ -36,21 +36,20 @@
 enum HighLevelError : uint16_t {
     NoError = 0,
     WriteError = 0x0100,
-    ReadError,
-    DeviceError,
-    TxFrameError,
-    RxFrameError
+    ReadError = 0x0200,
+    DeviceError = 0x0300,
+    TxFrameError = 0x0400,
+    RxFrameError = 0x0500
 };
 
 enum LowLevelError : uint16_t {
     SerialWriteError,
     NonemptyFrameError,
-    NoDataAvailableError,
-    BufferSizeError,
-    StartByteError,
-    StopByteError,
     NoDataError,
-    ChecksumError
+    BufferSizeError,
+    StopByteError,
+    ChecksumError,
+    TimeoutError
 };
 
 void errorToString(uint16_t error, char errorMessage[256]);

@@ -50,9 +50,8 @@ void loop() {
 
     error |= txFrame.reset();
 
-    error |= SensirionShdlcCommunication::receiveFrame(rxFrame, Serial);
-
-    error |= rxFrame.processHeader();
+    error |=
+        SensirionShdlcCommunication::receiveFrame(rxFrame, Serial, 1000000);
 
     error |= rxFrame.getUInt32(mockUInt32);
     error |= rxFrame.getInt32(mockInt32);
@@ -63,7 +62,12 @@ void loop() {
     error |= rxFrame.getFloat(mockFloat);
     error |= rxFrame.getBytes(mockBytes, 4);
 
-    error |= rxFrame.processTail();
-
+    mockCommand = rxFrame.getCommand();
+    mockAddress = rxFrame.getAddress();
+    mockDataLength = rxFrame.getDataLength();
+    uint8_t mockState = rxFrame.getState();
+    if (mockState) {
+        // There is an error in the device.
+    }
     rxFrame.reset();
 }

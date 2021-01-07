@@ -38,7 +38,7 @@
 
 SensirionShdlcTxFrame::SensirionShdlcTxFrame(uint8_t buffer[],
                                              size_t bufferSize)
-    : _buffer(buffer), _bufferSize(bufferSize), _checksum(0), _index(0),
+    : _buffer(buffer), _bufferSize(bufferSize), _index(0), _checksum(0),
       _isFinished(false) {
 }
 

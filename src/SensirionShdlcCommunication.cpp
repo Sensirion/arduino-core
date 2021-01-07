@@ -38,6 +38,34 @@
 #include "SensirionShdlcRxFrame.h"
 #include "SensirionShdlcTxFrame.h"
 
+static uint16_t readByte(uint8_t& data, Stream& serial, unsigned long startTime,
+                         unsigned long timeoutMicros) {
+    do {
+        if (micros() - startTime > timeoutMicros) {
+            return ReadError | TimeoutError;
+        }
+    } while (!serial.available());
+    data = serial.read();
+    return NoError;
+}
+
+static uint16_t unstuffByte(uint8_t& data, Stream& serial,
+                            unsigned long startTime,
+                            unsigned long timeoutMicros) {
+    uint16_t error = readByte(data, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
+    }
+    if (data == 0x7d) {
+        error = readByte(data, serial, startTime, timeoutMicros);
+        if (error) {
+            return error;
+        }
+        data = data ^ (1 << 5);
+    }
+    return NoError;
+}
+
 uint16_t SensirionShdlcCommunication::sendFrame(SensirionShdlcTxFrame& frame,
                                                 Stream& serial) {
     size_t writtenBytes = serial.write(&frame._buffer[0], frame._index);
@@ -47,30 +75,87 @@ uint16_t SensirionShdlcCommunication::sendFrame(SensirionShdlcTxFrame& frame,
     return NoError;
 }
 
-uint16_t SensirionShdlcCommunication::receiveFrame(SensirionShdlcRxFrame& frame,
-                                                   Stream& serial) {
-    if (frame._isFilled) {
+uint16_t SensirionShdlcCommunication::receiveFrame(
+    SensirionShdlcRxFrame& frame, Stream& serial, unsigned long timeoutMicros) {
+    unsigned long startTime = micros();
+    uint16_t error;
+    uint8_t dataLength;
+    uint8_t current = 0;
+
+    if (frame._dataLength) {
         return ReadError | NonemptyFrameError;
     }
-    if (!serial.available()) {
-        return ReadError | NoDataAvailableError;
+
+    // Wait for start byte and ignore all other bytes in case a partial frame
+    // is still in the receive buffer due to a previous error.
+    do {
+        error = readByte(current, serial, startTime, timeoutMicros);
+        if (error) {
+            return error;
+        }
+    } while (current != 0x7e);
+
+    // Handle a repeated start byte which may happen
+    do {
+        error = unstuffByte(current, serial, startTime, timeoutMicros);
+        if (error) {
+            return error;
+        }
+    } while (current == 0x7e);
+
+    frame._address = current;
+    error = unstuffByte(frame._command, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
     }
-    if (!frame._bufferSize) {
-        return ReadError | BufferSizeError;
+    error = unstuffByte(frame._state, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
     }
-    frame._buffer[0] = serial.read();
-    if (frame._buffer[0] != 0x7e) {
-        return ReadError | StartByteError;
+    if (frame._state & 0x7F) {
+        return DeviceError | frame._state;
     }
-    size_t readBytes =
-        serial.readBytesUntil(0x7e, &frame._buffer[1], frame._bufferSize - 1);
-    if (!readBytes) {
-        return ReadError | NoDataError;
+    error = unstuffByte(dataLength, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
     }
-    if (readBytes + 1 >= frame._bufferSize) {
-        return ReadError | BufferSizeError;
+
+    uint8_t checksum =
+        frame._address + frame._command + frame._state + dataLength;
+
+    if (dataLength > frame._bufferSize) {
+        return RxFrameError | BufferSizeError;
     }
-    frame._buffer[readBytes + 1] = 0x7e;
-    frame._isFilled = true;
+
+    size_t i = 0;
+    while (i < dataLength) {
+        error = unstuffByte(current, serial, startTime, timeoutMicros);
+        if (error) {
+            return error;
+        }
+        frame._buffer[i] = current;
+        checksum += current;
+        i++;
+    }
+
+    uint8_t expectedChecksum = ~checksum;
+    uint8_t actualChecksum;
+    error = unstuffByte(actualChecksum, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
+    }
+    if (expectedChecksum != actualChecksum) {
+        return ReadError | ChecksumError;
+    }
+
+    uint8_t stop;
+    error = readByte(stop, serial, startTime, timeoutMicros);
+    if (error) {
+        return error;
+    }
+    if (stop != 0x7e) {
+        return ReadError | StopByteError;
+    }
+    frame._dataLength = dataLength;
     return NoError;
 }
