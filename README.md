@@ -40,12 +40,15 @@ call the `.begin()` function with the right configuration. Then call the static
 function `sendFrame()` form `SensirionShdlcCommunication` as shown below. You
 need to replace `STREAMOBJECT` with the initialized Stream object of your
 choice. To receive the reply from the sensor call the following with the same
-Stream object.
+Stream object. Here you need to add a timeout (in micro seconds), consult the
+data sheet of your sensor for more specific information on the best timeout
+value.
 
-You can then decode the received frame by first calling `processHeader()` and
-then decoding the frame by using the different get members to decode your data.
-Lastly call `processTail()` to check the checksum of the data. If a non zero
-error code is returned the data is corrupted and must be discarded.
+You can decode the frame by using the different get members to convert the
+received data to desired data types.
+
+All functions return a error code if an error occurs during execution and zero
+otherwise.
 
 ```cpp
 uint8_t txBuffer[256];
@@ -63,12 +66,9 @@ txFrame.finish();
 
 SensirionShdlcCommunication::sendFrame(txFrame, STREAMOBJECT);
 
-SensirionShdlcCommunication::receiveFrame(rxFrame, STREAMOBJECT);
-
-rxFrame.processHeader();
+SensirionShdlcCommunication::receiveFrame(rxFrame, STREAMOBJECT, TIMEOUT);
 
 rxFrame.getUInt16(UINT16);
 rxFrame.getFloat(FLOAT);
 
-error = rxFrame.processTail();
 ```
