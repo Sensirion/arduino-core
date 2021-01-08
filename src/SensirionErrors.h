@@ -49,7 +49,9 @@ enum LowLevelError : uint16_t {
     BufferSizeError,
     StopByteError,
     ChecksumError,
-    TimeoutError
+    TimeoutError,
+    RxCommandError,
+    RxAddressError
 };
 
 void errorToString(uint16_t error, char errorMessage[256]);

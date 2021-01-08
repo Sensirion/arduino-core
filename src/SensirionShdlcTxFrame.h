@@ -54,6 +54,12 @@ class SensirionShdlcTxFrame {
     uint16_t begin(uint8_t command, uint8_t address, uint8_t dataLength);
     uint16_t finish(void);
     uint16_t reset(void);
+    uint8_t getCommand(void) const {
+        return _command;
+    };
+    uint8_t getAddress(void) const {
+        return _address;
+    }
 
   private:
     uint8_t* _buffer;
@@ -61,6 +67,8 @@ class SensirionShdlcTxFrame {
     size_t _index;
     uint8_t _checksum;
     bool _isFinished;
+    uint8_t _command;
+    uint8_t _address;
 };
 
 #endif /* SENSIRION_SHDLC_TX_FRAME_H_ */

@@ -159,3 +159,25 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
     frame._dataLength = dataLength;
     return NoError;
 }
+
+uint16_t SensirionShdlcCommunication::sendAndReceiveFrame(
+    Stream& serial, SensirionShdlcTxFrame& txFrame,
+    SensirionShdlcRxFrame& rxFrame, unsigned long rxTimeoutMicros) {
+    uint16_t error;
+    error = SensirionShdlcCommunication::sendFrame(txFrame, serial);
+    if (error) {
+        return error;
+    }
+    error = SensirionShdlcCommunication::receiveFrame(rxFrame, serial,
+                                                      rxTimeoutMicros);
+    if (error) {
+        return error;
+    }
+    if (rxFrame.getCommand() != txFrame.getCommand()) {
+        return RxFrameError | RxCommandError;
+    }
+    if (rxFrame.getAddress() != txFrame.getAddress()) {
+        return RxFrameError | RxAddressError;
+    }
+    return NoError;
+}
