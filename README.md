@@ -18,6 +18,14 @@ Not looking for Ardunio drivers? Check out our other drivers here:
 
 ## SHDLC
 
+SHDLC (Sensirion High-Level Data Link Control) is a byte-oriented master-slave
+communication protocol based on [ISO
+HDLC](https://en.wikipedia.org/wiki/High-Level_Data_Link_Control). It is used
+to control some of Sensirion’s devices (for example mass flow controllers). The
+detailed protocol documentation is not publicly available (yet). If you need
+it, please contact our [customer
+support](https://www.sensirion.com/en/about-us/contact/).
+
 This library provides the following classes for communication with Sensirion
 Sensors using the SHDLC protocol.
 - `SensirionShdlcTxFrame`
