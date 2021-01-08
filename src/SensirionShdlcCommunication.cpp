@@ -113,7 +113,7 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
         return error;
     }
     if (frame._state & 0x7F) {
-        return DeviceError | frame._state;
+        return ExecutionError | frame._state;
     }
     error = unstuffByte(dataLength, serial, startTime, timeoutMicros);
     if (error) {

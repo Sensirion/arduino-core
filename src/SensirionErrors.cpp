@@ -62,8 +62,8 @@ void errorToString(uint16_t error, char errorMessage[256]) {
                     strcpy(errorMessage, "Checksum is wrong");
                     return;
             }
-        case HighLevelError::DeviceError: {
-            char format[] = "Device error, status register: 0x%x";
+        case HighLevelError::ExecutionError: {
+            char format[] = "Execution error, status register: 0x%x";
             sprintf(errorMessage, format, lowLevelError);
             return;
         }
