@@ -34,24 +34,30 @@
 #include <stdint.h>
 
 enum HighLevelError : uint16_t {
+    // general errors
     NoError = 0,
     WriteError = 0x0100,
     ReadError = 0x0200,
-    ExecutionError = 0x0300,
-    TxFrameError = 0x0400,
-    RxFrameError = 0x0500
+    TxFrameError = 0x0300,
+    RxFrameError = 0x0400,
+    // shdlc errors
+    ExecutionError = 0x0500
+    // i2c errors
 };
 
 enum LowLevelError : uint16_t {
-    SerialWriteError,
+    // general errors
     NonemptyFrameError,
     NoDataError,
     BufferSizeError,
+    // shdlc errors
     StopByteError,
     ChecksumError,
     TimeoutError,
     RxCommandError,
     RxAddressError,
+    SerialWriteError,
+    // i2c errors
     WrongNumberBytesError,
     CRCError,
     I2CWriteError,
