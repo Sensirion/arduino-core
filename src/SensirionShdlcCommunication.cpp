@@ -112,9 +112,6 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
     if (error) {
         return error;
     }
-    if (frame._state & 0x7F) {
-        return ExecutionError | frame._state;
-    }
     error = unstuffByte(dataLength, serial, startTime, timeoutMicros);
     if (error) {
         return error;
@@ -155,6 +152,9 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
     }
     if (stop != 0x7e) {
         return ReadError | StopByteError;
+    }
+    if (frame._state & 0x7F) {
+        return ExecutionError | frame._state;
     }
     frame._dataLength = dataLength;
     return NoError;
