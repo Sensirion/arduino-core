@@ -81,6 +81,12 @@ void errorToString(uint16_t error, char errorMessage[256]) {
                 case LowLevelError::NoDataError:
                     strcpy(errorMessage, "No more data in frame");
                     return;
+                case LowLevelError::RxAddressError:
+                    strcpy(errorMessage, "Wrong address in return frame");
+                    return;
+                case LowLevelError::RxCommandError:
+                    strcpy(errorMessage, "Wrong command in return frame");
+                    return;
             }
     }
     strcpy(errorMessage, "Error processing error");

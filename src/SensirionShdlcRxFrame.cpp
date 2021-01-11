@@ -122,8 +122,3 @@ uint16_t SensirionShdlcRxFrame::getBytes(uint8_t data[], size_t maxAmount) {
     _dataLength -= readAmount;
     return NoError;
 }
-
-void SensirionShdlcRxFrame::reset(void) {
-    _dataLength = 0;
-    _index = 0;
-}

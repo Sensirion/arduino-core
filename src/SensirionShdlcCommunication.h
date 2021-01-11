@@ -47,6 +47,10 @@ class SensirionShdlcCommunication {
     static uint16_t sendFrame(SensirionShdlcTxFrame& frame, Stream& serial);
     static uint16_t receiveFrame(SensirionShdlcRxFrame& frame, Stream& serial,
                                  unsigned long timeoutMicros);
+    static uint16_t sendAndReceiveFrame(Stream& serial,
+                                        SensirionShdlcTxFrame& txFrame,
+                                        SensirionShdlcRxFrame& rxFrame,
+                                        unsigned long rxTimeoutMicros);
 };
 
 #endif /* SENSIRION_SHDLC_COMMUNICATION_H_ */

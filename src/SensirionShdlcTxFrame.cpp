@@ -116,6 +116,8 @@ uint16_t SensirionShdlcTxFrame::begin(uint8_t command, uint8_t address,
     uint16_t error = addUInt8(address);
     error |= addUInt8(command);
     error |= addUInt8(dataLength);
+    _command = command;
+    _address = address;
     return error;
 }
 
@@ -130,11 +132,4 @@ uint16_t SensirionShdlcTxFrame::finish(void) {
     _buffer[_index++] = 0x7e;
     _isFinished = true;
     return error;
-}
-
-uint16_t SensirionShdlcTxFrame::reset(void) {
-    _isFinished = false;
-    _index = 0;
-    _checksum = 0;
-    return NoError;
 }
