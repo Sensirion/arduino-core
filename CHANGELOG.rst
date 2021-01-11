@@ -38,7 +38,7 @@ Removed
 `0.1.0`_ 2021-01-07
 -------------------
 
- - Initial release
+- Initial release
 
 
 .. _Unreleased: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.2.0...main
