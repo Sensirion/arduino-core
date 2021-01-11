@@ -53,7 +53,6 @@ class SensirionShdlcTxFrame {
     uint16_t addBytes(uint8_t data[], size_t dataLength);
     uint16_t begin(uint8_t command, uint8_t address, uint8_t dataLength);
     uint16_t finish(void);
-    uint16_t reset(void);
     uint8_t getCommand(void) const {
         return _command;
     };

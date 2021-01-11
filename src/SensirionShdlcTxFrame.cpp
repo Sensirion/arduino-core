@@ -133,10 +133,3 @@ uint16_t SensirionShdlcTxFrame::finish(void) {
     _isFinished = true;
     return error;
 }
-
-uint16_t SensirionShdlcTxFrame::reset(void) {
-    _isFinished = false;
-    _index = 0;
-    _checksum = 0;
-    return NoError;
-}

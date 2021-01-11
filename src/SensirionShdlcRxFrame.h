@@ -51,7 +51,6 @@ class SensirionShdlcRxFrame {
     uint16_t getBool(bool& data);
     uint16_t getFloat(float& data);
     uint16_t getBytes(uint8_t data[], size_t amount);
-    void reset(void);
     uint8_t getAddress(void) const {
         return _address;
     };
