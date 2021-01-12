@@ -23,9 +23,9 @@ def test_all_boards(sketch):
                              stdout=subprocess.PIPE)
     board_list_json = process.stdout.decode('utf-8')
     board_list = json.loads(board_list_json)
-    test_list = ["esp8266:esp8266:generic", "arduino:samd:mkrzero",
-                 "arduino:avr:mega", "arduino:avr:nano", "arduino:avr:uno",
-                 "esp32:esp32:esp32"]
+    test_list = ["arduino:samd:mkrzero", "arduino:avr:mega",
+                 "arduino:avr:nano", "arduino:avr:uno",
+                 "esp32:esp32:esp32", "esp8266:esp8266:generic"]
     for board in test_list:
         if board in (b['FQBN'] for b in board_list['boards']):
             log.info('Test compilation for board {}'.format(board))
