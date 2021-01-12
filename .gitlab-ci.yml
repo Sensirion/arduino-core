@@ -30,3 +30,10 @@ syntax_check:
     - apt-get update && apt-get install -yq clang-format-6.0
   script:
     - tests/syntax_check.sh
+
+cppcheck:
+  stage: validate
+  image: registry.gitlab.sensirion.lokal/sensirion/docker/docker-cppcheck
+  tags: [linux, docker]
+  script:
+    - cppcheck --std=c++11 --error-exitcode=1 --enable=warning,style,performance,portability src/*
