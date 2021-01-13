@@ -44,30 +44,36 @@ uint16_t SensirionRxFrame::getUInt32(uint32_t& data) {
     if (_numBytes < 4) {
         return RxFrameError | NoDataError;
     }
-    data = (uint32_t)_buffer[_index++] << 24;
-    data |= (uint32_t)_buffer[_index++] << 16;
-    data |= (uint32_t)_buffer[_index++] << 8;
-    data |= (uint32_t)_buffer[_index++];
+    data = static_cast<uint32_t>(_buffer[_index++]) << 24;
+    data |= static_cast<uint32_t>(_buffer[_index++]) << 16;
+    data |= static_cast<uint32_t>(_buffer[_index++]) << 8;
+    data |= static_cast<uint32_t>(_buffer[_index++]);
     _numBytes -= 4;
     return NoError;
 }
 
 uint16_t SensirionRxFrame::getInt32(int32_t& data) {
-    return getUInt32((uint32_t&)data);
+    uint32_t ret;
+    uint16_t error = getUInt32(ret);
+    data = static_cast<int32_t>(ret);
+    return error;
 }
 
 uint16_t SensirionRxFrame::getUInt16(uint16_t& data) {
     if (_numBytes < 2) {
         return RxFrameError | NoDataError;
     }
-    data = (uint16_t)_buffer[_index++] << 8;
-    data |= (uint16_t)_buffer[_index++];
+    data = static_cast<uint16_t>(_buffer[_index++]) << 8;
+    data |= static_cast<uint16_t>(_buffer[_index++]);
     _numBytes -= 2;
     return NoError;
 }
 
 uint16_t SensirionRxFrame::getInt16(int16_t& data) {
-    return getUInt16((uint16_t&)data);
+    uint16_t ret;
+    uint16_t error = getUInt16(ret);
+    data = static_cast<int16_t>(ret);
+    return error;
 }
 
 uint16_t SensirionRxFrame::getUInt8(uint8_t& data) {
@@ -83,7 +89,7 @@ uint16_t SensirionRxFrame::getInt8(int8_t& data) {
     if (_numBytes < 1) {
         return RxFrameError | NoDataError;
     }
-    data = (int8_t)_buffer[_index++];
+    data = static_cast<int8_t>(_buffer[_index++]);
     _numBytes -= 1;
     return NoError;
 }
@@ -92,7 +98,7 @@ uint16_t SensirionRxFrame::getBool(bool& data) {
     if (_numBytes < 1) {
         return RxFrameError | NoDataError;
     }
-    data = (bool)_buffer[_index++];
+    data = static_cast<bool>(_buffer[_index++]);
     _numBytes -= 1;
     return NoError;
 }

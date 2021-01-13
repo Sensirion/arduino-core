@@ -41,25 +41,25 @@ SensirionI2CTxFrame::SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize)
 }
 
 uint16_t SensirionI2CTxFrame::addUInt32(uint32_t data) {
-    uint16_t error = _addByte((uint8_t)((data & 0xFF000000) >> 24));
-    error |= _addByte((uint8_t)((data & 0x00FF0000) >> 16));
-    error |= _addByte((uint8_t)((data & 0x0000FF00) >> 8));
-    error |= _addByte((uint8_t)((data & 0x000000FF) >> 0));
+    uint16_t error = _addByte(static_cast<uint8_t>((data & 0xFF000000) >> 24));
+    error |= _addByte(static_cast<uint8_t>((data & 0x00FF0000) >> 16));
+    error |= _addByte(static_cast<uint8_t>((data & 0x0000FF00) >> 8));
+    error |= _addByte(static_cast<uint8_t>((data & 0x000000FF) >> 0));
     return error;
 }
 
 uint16_t SensirionI2CTxFrame::addInt32(int32_t data) {
-    return addUInt32((uint32_t)data);
+    return addUInt32(static_cast<uint32_t>(data));
 }
 
 uint16_t SensirionI2CTxFrame::addUInt16(uint16_t data) {
-    uint16_t error = _addByte((uint8_t)((data & 0xFF00) >> 8));
-    error |= _addByte((uint8_t)((data & 0x00FF) >> 0));
+    uint16_t error = _addByte(static_cast<uint8_t>((data & 0xFF00) >> 8));
+    error |= _addByte(static_cast<uint8_t>((data & 0x00FF) >> 0));
     return error;
 }
 
 uint16_t SensirionI2CTxFrame::addInt16(int16_t data) {
-    return addUInt16((uint16_t)data);
+    return addUInt16(static_cast<uint16_t>(data));
 }
 
 uint16_t SensirionI2CTxFrame::addUInt8(uint8_t data) {
@@ -67,11 +67,11 @@ uint16_t SensirionI2CTxFrame::addUInt8(uint8_t data) {
 }
 
 uint16_t SensirionI2CTxFrame::addInt8(int8_t data) {
-    return _addByte((uint8_t)data);
+    return _addByte(static_cast<uint8_t>(data));
 }
 
 uint16_t SensirionI2CTxFrame::addBool(bool data) {
-    return _addByte((uint8_t)data);
+    return _addByte(static_cast<uint8_t>(data));
 }
 
 uint16_t SensirionI2CTxFrame::addFloat(float data) {
@@ -96,8 +96,8 @@ uint16_t SensirionI2CTxFrame::addCommand(uint16_t command) {
     if (_bufferSize < 2) {
         return TxFrameError | BufferSizeError;
     }
-    _buffer[0] = (uint8_t)((command & 0xFF00) >> 8);
-    _buffer[1] = (uint8_t)((command & 0x00FF) >> 0);
+    _buffer[0] = static_cast<uint8_t>((command & 0xFF00) >> 8);
+    _buffer[1] = static_cast<uint8_t>((command & 0x00FF) >> 0);
     return NoError;
 }
 

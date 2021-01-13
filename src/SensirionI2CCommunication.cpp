@@ -80,9 +80,11 @@ uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
     size_t i = 0;
 
 #ifdef I2C_BUFFER_LENGTH
-    const uint8_t sizeBuffer = ((uint8_t)I2C_BUFFER_LENGTH / (uint8_t)3) * 3;
+    const uint8_t sizeBuffer =
+        (static_cast<uint8_t>(I2C_BUFFER_LENGTH) / static_cast<uint8_t>(3)) * 3;
 #elif defined(BUFFER_LENGTH)
-    const uint8_t sizeBuffer = ((uint8_t)BUFFER_LENGTH / (uint8_t)3) * 3;
+    const uint8_t sizeBuffer =
+        (static_cast<uint8_t>(BUFFER_LENGTH) / static_cast<uint8_t>(3)) * 3;
 #else
     const uint8_t sizeBuffer = 30;
 #endif
@@ -97,7 +99,8 @@ uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
         return ReadError | InternalBufferSizeError;
     }
 
-    readAmount = i2cBus.requestFrom(address, (uint8_t)numBytes, (uint8_t) true);
+    readAmount = i2cBus.requestFrom(address, static_cast<uint8_t>(numBytes),
+                                    static_cast<uint8_t>(true));
     if (numBytes != readAmount) {
         return ReadError | NotEnoughDataError;
     }
