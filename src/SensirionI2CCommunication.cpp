@@ -39,14 +39,12 @@
 #include "SensirionI2CTxFrame.h"
 
 static uint8_t generateCRC(const uint8_t* data, size_t count) {
-    size_t current_byte;
     uint8_t crc = 0xFF;
-    uint8_t crc_bit;
 
     /* calculates 8-Bit checksum with given polynomial */
-    for (current_byte = 0; current_byte < count; ++current_byte) {
+    for (size_t current_byte = 0; current_byte < count; ++current_byte) {
         crc ^= (data[current_byte]);
-        for (crc_bit = 8; crc_bit > 0; --crc_bit) {
+        for (uint8_t crc_bit = 8; crc_bit > 0; --crc_bit) {
             if (crc & 0x80)
                 crc = (crc << 1) ^ 0x31;
             else
