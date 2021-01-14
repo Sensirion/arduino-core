@@ -41,7 +41,10 @@ class SensirionShdlcTxFrame {
     friend class SensirionShdlcCommunication;
 
   public:
-    SensirionShdlcTxFrame(uint8_t buffer[], size_t bufferSize);
+    SensirionShdlcTxFrame(uint8_t buffer[], size_t bufferSize)
+        : _buffer(buffer), _bufferSize(bufferSize) {
+    }
+
     uint16_t addUInt32(uint32_t data);
     uint16_t addInt32(int32_t data);
     uint16_t addUInt16(uint16_t data);
@@ -63,11 +66,11 @@ class SensirionShdlcTxFrame {
   private:
     uint8_t* _buffer;
     size_t _bufferSize;
-    size_t _index;
-    uint8_t _checksum;
-    bool _isFinished;
-    uint8_t _command;
-    uint8_t _address;
+    size_t _index = 0;
+    uint8_t _checksum = 0;
+    bool _isFinished = false;
+    uint8_t _command = 0;
+    uint8_t _address = 0;
 };
 
 #endif /* SENSIRION_SHDLC_TX_FRAME_H_ */

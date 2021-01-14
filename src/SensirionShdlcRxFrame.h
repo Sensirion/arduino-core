@@ -58,10 +58,10 @@ class SensirionShdlcRxFrame : public SensirionRxFrame {
     };
 
   private:
-    uint8_t _address;
-    uint8_t _command;
-    uint8_t _state;
-    uint8_t _dataLength;
+    uint8_t _address = 0;
+    uint8_t _command = 0;
+    uint8_t _state = 0;
+    uint8_t _dataLength = 0;
 };
 
 #endif /* SENSIRION_SHDLC_RX_FRAME_H_ */

@@ -36,12 +36,6 @@
 
 #include "SensirionErrors.h"
 
-SensirionShdlcTxFrame::SensirionShdlcTxFrame(uint8_t buffer[],
-                                             size_t bufferSize)
-    : _buffer(buffer), _bufferSize(bufferSize), _index(0), _checksum(0),
-      _isFinished(false) {
-}
-
 uint16_t SensirionShdlcTxFrame::addUInt32(uint32_t data) {
     uint16_t error = addUInt8(static_cast<uint8_t>((data & 0xFF000000) >> 24));
     error |= addUInt8(static_cast<uint8_t>((data & 0x00FF0000) >> 16));
@@ -131,5 +125,5 @@ uint16_t SensirionShdlcTxFrame::finish(void) {
     }
     _buffer[_index++] = 0x7e;
     _isFinished = true;
-    return error;
+    return NoError;
 }
