@@ -36,4 +36,4 @@ cppcheck:
   image: registry.gitlab.sensirion.lokal/sensirion/docker/docker-cppcheck
   tags: [linux, docker]
   script:
-    - cppcheck --std=c++11 --error-exitcode=1 --enable=warning,style,performance,portability src/*
+    - tests/run_cppcheck.sh
