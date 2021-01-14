@@ -32,6 +32,7 @@
 #define _SENSIRION_ERRORS_H_
 
 #include <stdint.h>
+#include <stdlib.h>
 
 enum HighLevelError : uint16_t {
     // general errors
@@ -65,6 +66,7 @@ enum LowLevelError : uint16_t {
     InternalBufferSizeError
 };
 
-void errorToString(uint16_t error, char errorMessage[256]);
+void errorToString(uint16_t error, char errorMessage[],
+                   size_t errorMessageSize);
 
 #endif /* _SENSIRION_ERRORS_H_ */

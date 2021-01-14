@@ -9,6 +9,13 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 `Unreleased`_
 -------------
 
+Breaking
+........
+
+- Change interface of ``errorToString()`` function to include length of the
+  provided buffer.
+
+
 `0.3.0`_ 2021-01-13
 -------------------
 

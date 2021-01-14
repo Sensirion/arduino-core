@@ -34,79 +34,95 @@
 #include <stdio.h>
 #include <string.h>
 
-void errorToString(uint16_t error, char errorMessage[256]) {
+void errorToString(uint16_t error, char errorMessage[],
+                   size_t errorMessageSize) {
     uint16_t highLevelError = error & 0xFF00;
     uint16_t lowLevelError = error & 0x00FF;
     switch (highLevelError) {
         case HighLevelError::NoError:
             if (!error) {
-                strcpy(errorMessage, "No error");
+                strncpy(errorMessage, "No error", errorMessageSize);
                 return;
             }
             break;
         case HighLevelError::WriteError:
             switch (lowLevelError) {
                 case LowLevelError::SerialWriteError:
-                    strcpy(errorMessage, "Error writing to serial");
+                    strncpy(errorMessage, "Error writing to serial",
+                            errorMessageSize);
                     return;
                 case LowLevelError::I2CWriteError:
-                    strcpy(errorMessage, "Error writing to I2C bus");
+                    strncpy(errorMessage, "Error writing to I2C bus",
+                            errorMessageSize);
                     return;
             }
         case HighLevelError::ReadError:
             switch (lowLevelError) {
                 case LowLevelError::NonemptyFrameError:
-                    strcpy(errorMessage, "Frame already contains data");
+                    strncpy(errorMessage, "Frame already contains data",
+                            errorMessageSize);
                     return;
                 case LowLevelError::TimeoutError:
-                    strcpy(errorMessage, "Timeout while reading data");
+                    strncpy(errorMessage, "Timeout while reading data",
+                            errorMessageSize);
                     return;
                 case LowLevelError::ChecksumError:
-                    strcpy(errorMessage, "Checksum is wrong");
+                    strncpy(errorMessage, "Checksum is wrong",
+                            errorMessageSize);
                     return;
                 case LowLevelError::CRCError:
-                    strcpy(errorMessage, "Wrong CRC found");
+                    strncpy(errorMessage, "Wrong CRC found", errorMessageSize);
                     return;
                 case LowLevelError::WrongNumberBytesError:
-                    strcpy(errorMessage, "The number of bytes to be read are "
-                                         "not a multiple of 3");
+                    strncpy(errorMessage,
+                            "The number of bytes to be read are "
+                            "not a multiple of 3",
+                            errorMessageSize);
                     return;
                 case LowLevelError::NotEnoughDataError:
-                    strcpy(errorMessage, "Not enough data received");
+                    strncpy(errorMessage, "Not enough data received",
+                            errorMessageSize);
                     return;
                 case LowLevelError::InternalBufferSizeError:
-                    strcpy(errorMessage,
-                           "Can't execute this command on this board, internal "
-                           "I2C buffer is too small");
+                    strncpy(
+                        errorMessage,
+                        "Can't execute this command on this board, internal "
+                        "I2C buffer is too small",
+                        errorMessageSize);
                     return;
             }
         case HighLevelError::ExecutionError: {
             char format[] = "Execution error, status register: 0x%x";
-            sprintf(errorMessage, format, lowLevelError);
+            snprintf(errorMessage, errorMessageSize, format, lowLevelError);
             return;
         }
         case HighLevelError::TxFrameError:
             switch (lowLevelError) {
                 case LowLevelError::BufferSizeError:
-                    strcpy(errorMessage, "Not enough space in buffer");
+                    strncpy(errorMessage, "Not enough space in buffer",
+                            errorMessageSize);
                     return;
             }
         case HighLevelError::RxFrameError:
             switch (lowLevelError) {
                 case LowLevelError::BufferSizeError:
-                    strcpy(errorMessage, "Not enough space in buffer");
+                    strncpy(errorMessage, "Not enough space in buffer",
+                            errorMessageSize);
                     return;
                 case LowLevelError::NoDataError:
-                    strcpy(errorMessage, "No more data in frame");
+                    strncpy(errorMessage, "No more data in frame",
+                            errorMessageSize);
                     return;
                 case LowLevelError::RxAddressError:
-                    strcpy(errorMessage, "Wrong address in return frame");
+                    strncpy(errorMessage, "Wrong address in return frame",
+                            errorMessageSize);
                     return;
                 case LowLevelError::RxCommandError:
-                    strcpy(errorMessage, "Wrong command in return frame");
+                    strncpy(errorMessage, "Wrong command in return frame",
+                            errorMessageSize);
                     return;
             }
     }
-    strcpy(errorMessage, "Error processing error");
+    strncpy(errorMessage, "Error processing error", errorMessageSize);
     return;
 }
