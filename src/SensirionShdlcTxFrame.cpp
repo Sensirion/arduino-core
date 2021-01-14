@@ -43,25 +43,25 @@ SensirionShdlcTxFrame::SensirionShdlcTxFrame(uint8_t buffer[],
 }
 
 uint16_t SensirionShdlcTxFrame::addUInt32(uint32_t data) {
-    uint16_t error = addUInt8((uint8_t)((data & 0xFF000000) >> 24));
-    error |= addUInt8((uint8_t)((data & 0x00FF0000) >> 16));
-    error |= addUInt8((uint8_t)((data & 0x0000FF00) >> 8));
-    error |= addUInt8((uint8_t)((data & 0x000000FF) >> 0));
+    uint16_t error = addUInt8(static_cast<uint8_t>((data & 0xFF000000) >> 24));
+    error |= addUInt8(static_cast<uint8_t>((data & 0x00FF0000) >> 16));
+    error |= addUInt8(static_cast<uint8_t>((data & 0x0000FF00) >> 8));
+    error |= addUInt8(static_cast<uint8_t>((data & 0x000000FF) >> 0));
     return error;
 }
 
 uint16_t SensirionShdlcTxFrame::addInt32(int32_t data) {
-    return addUInt32((uint32_t)data);
+    return addUInt32(static_cast<uint32_t>(data));
 }
 
 uint16_t SensirionShdlcTxFrame::addUInt16(uint16_t data) {
-    uint16_t error = addUInt8((uint8_t)((data & 0xFF00) >> 8));
-    error |= addUInt8((uint8_t)((data & 0x00FF) >> 0));
+    uint16_t error = addUInt8(static_cast<uint8_t>((data & 0xFF00) >> 8));
+    error |= addUInt8(static_cast<uint8_t>((data & 0x00FF) >> 0));
     return error;
 }
 
 uint16_t SensirionShdlcTxFrame::addInt16(int16_t data) {
-    return addUInt16((uint16_t)data);
+    return addUInt16(static_cast<uint16_t>(data));
 }
 
 uint16_t SensirionShdlcTxFrame::addUInt8(uint8_t data) {
@@ -85,11 +85,11 @@ uint16_t SensirionShdlcTxFrame::addUInt8(uint8_t data) {
 }
 
 uint16_t SensirionShdlcTxFrame::addInt8(int8_t data) {
-    return addUInt8((uint8_t)data);
+    return addUInt8(static_cast<uint8_t>(data));
 }
 
 uint16_t SensirionShdlcTxFrame::addBool(bool data) {
-    return addUInt8((uint8_t)data);
+    return addUInt8(static_cast<uint8_t>(data));
 }
 
 uint16_t SensirionShdlcTxFrame::addFloat(float data) {

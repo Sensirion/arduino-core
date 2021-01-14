@@ -9,6 +9,24 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 `Unreleased`_
 -------------
 
+`0.3.0`_ 2021-01-13
+-------------------
+
+Added
+.....
+
+- Core implementation for I2C communication. This includes a RX and TX frame
+  and a I2C communication class.
+
+Changed
+.......
+
+- SHDLC and I2C RX frame inherit from a RX frame base class.
+- ESP8266 test board from esp8266:esp8266:arduino to esp8266:esp8266:generic.
+- Sorted errors into general, SHDLC and I2C errors.
+- Replace C style casts with ``static_cast``.
+
+
 `0.2.0`_ 2021-01-11
 -------------------
 
@@ -41,6 +59,7 @@ Removed
 - Initial release
 
 
-.. _Unreleased: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.2.0...main
+.. _Unreleased: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.3.0...main
+.. _0.3.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.2.0...0.3.0
 .. _0.2.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.1.0...0.2.0
 .. _0.1.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/releases/tag/0.1.0

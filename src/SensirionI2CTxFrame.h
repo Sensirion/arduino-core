@@ -28,43 +28,37 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef _SENSIRION_ERRORS_H_
-#define _SENSIRION_ERRORS_H_
+#ifndef SENSIRION_I2C_TX_FRAME_H_
+#define SENSIRION_I2C_TX_FRAME_H_
 
 #include <stdint.h>
+#include <stdlib.h>
 
-enum HighLevelError : uint16_t {
-    // general errors
-    NoError = 0,
-    WriteError = 0x0100,
-    ReadError = 0x0200,
-    TxFrameError = 0x0300,
-    RxFrameError = 0x0400,
-    // shdlc errors
-    ExecutionError = 0x0500
-    // i2c errors
+#include "SensirionI2CCommunication.h"
+
+class SensirionI2CTxFrame {
+
+    friend class SensirionI2CCommunication;
+
+  public:
+    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize);
+    uint16_t addUInt32(uint32_t data);
+    uint16_t addInt32(int32_t data);
+    uint16_t addUInt16(uint16_t data);
+    uint16_t addInt16(int16_t data);
+    uint16_t addUInt8(uint8_t data);
+    uint16_t addInt8(int8_t data);
+    uint16_t addBool(bool data);
+    uint16_t addFloat(float data);
+    uint16_t addBytes(uint8_t data[], size_t dataLength);
+    uint16_t addCommand(uint16_t command);
+    uint16_t reset(void);
+
+  private:
+    uint16_t _addByte(uint8_t data);
+    uint8_t* _buffer;
+    size_t _bufferSize;
+    size_t _index;
 };
 
-enum LowLevelError : uint16_t {
-    // general errors
-    NonemptyFrameError,
-    NoDataError,
-    BufferSizeError,
-    // shdlc errors
-    StopByteError,
-    ChecksumError,
-    TimeoutError,
-    RxCommandError,
-    RxAddressError,
-    SerialWriteError,
-    // i2c errors
-    WrongNumberBytesError,
-    CRCError,
-    I2CWriteError,
-    NotEnoughDataError,
-    InternalBufferSizeError
-};
-
-void errorToString(uint16_t error, char errorMessage[256]);
-
-#endif /* _SENSIRION_ERRORS_H_ */
+#endif /* SENSIRION_I2C_TX_FRAME_H_ */

@@ -32,9 +32,14 @@
 #define _SENSIRION_CORE_ARDUINO_LIBRARY_H_
 
 #include "SensirionErrors.h"
+#include "SensirionRxFrame.h"
 
 #include "SensirionShdlcCommunication.h"
 #include "SensirionShdlcRxFrame.h"
 #include "SensirionShdlcTxFrame.h"
+
+#include "SensirionI2CCommunication.h"
+#include "SensirionI2CRxFrame.h"
+#include "SensirionI2CTxFrame.h"
 
 #endif /* _SENSIRION_CORE_ARDUION_LIBRARY_H_ */

@@ -28,43 +28,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef _SENSIRION_ERRORS_H_
-#define _SENSIRION_ERRORS_H_
+#ifndef SENSIRION_RX_FRAME_H_
+#define SENSIRION_RX_FRAME_H_
 
 #include <stdint.h>
+#include <stdlib.h>
 
-enum HighLevelError : uint16_t {
-    // general errors
-    NoError = 0,
-    WriteError = 0x0100,
-    ReadError = 0x0200,
-    TxFrameError = 0x0300,
-    RxFrameError = 0x0400,
-    // shdlc errors
-    ExecutionError = 0x0500
-    // i2c errors
+class SensirionRxFrame {
+
+    friend class SensirionI2CCommunication;
+    friend class SensirionShdlcCommunication;
+
+  public:
+    SensirionRxFrame(uint8_t buffer[], size_t bufferSize);
+    uint16_t getUInt32(uint32_t& data);
+    uint16_t getInt32(int32_t& data);
+    uint16_t getUInt16(uint16_t& data);
+    uint16_t getInt16(int16_t& data);
+    uint16_t getUInt8(uint8_t& data);
+    uint16_t getInt8(int8_t& data);
+    uint16_t getBool(bool& data);
+    uint16_t getFloat(float& data);
+    uint16_t getBytes(uint8_t data[], size_t amount);
+
+  private:
+    uint8_t* _buffer = 0;
+    size_t _bufferSize = 0;
+    size_t _index = 0;
+    size_t _numBytes = 0;
 };
 
-enum LowLevelError : uint16_t {
-    // general errors
-    NonemptyFrameError,
-    NoDataError,
-    BufferSizeError,
-    // shdlc errors
-    StopByteError,
-    ChecksumError,
-    TimeoutError,
-    RxCommandError,
-    RxAddressError,
-    SerialWriteError,
-    // i2c errors
-    WrongNumberBytesError,
-    CRCError,
-    I2CWriteError,
-    NotEnoughDataError,
-    InternalBufferSizeError
-};
-
-void errorToString(uint16_t error, char errorMessage[256]);
-
-#endif /* _SENSIRION_ERRORS_H_ */
+#endif /* SENSIRION_RX_FRAME_H_ */

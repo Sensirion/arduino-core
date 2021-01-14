@@ -28,43 +28,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef _SENSIRION_ERRORS_H_
-#define _SENSIRION_ERRORS_H_
+#ifndef SENSIRION_I2C_RX_FRAME_H_
+#define SENSIRION_I2C_RX_FRAME_H_
 
 #include <stdint.h>
+#include <stdlib.h>
 
-enum HighLevelError : uint16_t {
-    // general errors
-    NoError = 0,
-    WriteError = 0x0100,
-    ReadError = 0x0200,
-    TxFrameError = 0x0300,
-    RxFrameError = 0x0400,
-    // shdlc errors
-    ExecutionError = 0x0500
-    // i2c errors
+#include "SensirionI2CCommunication.h"
+#include "SensirionRxFrame.h"
+
+class SensirionI2CRxFrame : public SensirionRxFrame {
+
+    friend class SensirionI2CCommunication;
+
+  public:
+    SensirionI2CRxFrame(uint8_t buffer[], size_t bufferSize)
+        : SensirionRxFrame(buffer, bufferSize){};
 };
 
-enum LowLevelError : uint16_t {
-    // general errors
-    NonemptyFrameError,
-    NoDataError,
-    BufferSizeError,
-    // shdlc errors
-    StopByteError,
-    ChecksumError,
-    TimeoutError,
-    RxCommandError,
-    RxAddressError,
-    SerialWriteError,
-    // i2c errors
-    WrongNumberBytesError,
-    CRCError,
-    I2CWriteError,
-    NotEnoughDataError,
-    InternalBufferSizeError
-};
-
-void errorToString(uint16_t error, char errorMessage[256]);
-
-#endif /* _SENSIRION_ERRORS_H_ */
+#endif /* SENSIRION_I2C_RX_FRAME_H_ */

@@ -2,13 +2,21 @@ stages:
   - validate
   - test
 
-compile_test:
+compile_test_shdlc:
     stage: test
     image:
         name: registry.gitlab.sensirion.lokal/sensirion/docker/docker-arduino:0.4.0
     tags: [docker, linux]
     script:
-        - tests/compile_test.py -s examples/AllCommands/
+        - tests/compile_test.py -s examples/AllCommandsShdlc/
+
+compile_test_i2c:
+    stage: test
+    image:
+        name: registry.gitlab.sensirion.lokal/sensirion/docker/docker-arduino:0.4.0
+    tags: [docker, linux]
+    script:
+        - tests/compile_test.py -s examples/AllCommandsI2c/
 
 syntax_check:
   stage: validate
