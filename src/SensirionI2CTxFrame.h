@@ -52,7 +52,6 @@ class SensirionI2CTxFrame {
     uint16_t addFloat(float data);
     uint16_t addBytes(uint8_t data[], size_t dataLength);
     uint16_t addCommand(uint16_t command);
-    uint16_t reset(void);
 
   private:
     static uint8_t _generateCRC(const uint8_t* data, size_t count);

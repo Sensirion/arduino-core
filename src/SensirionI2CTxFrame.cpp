@@ -131,8 +131,3 @@ uint16_t SensirionI2CTxFrame::_addByte(uint8_t data) {
     }
     return NoError;
 }
-
-uint16_t SensirionI2CTxFrame::reset(void) {
-    _index = 2;
-    return NoError;
-}
