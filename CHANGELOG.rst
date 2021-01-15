@@ -15,6 +15,12 @@ Breaking
 - Change interface of ``errorToString()`` function to include length of the
   provided buffer.
 
+Removed
+.......
+
+- Removed ``reset()`` function from ``SensirionI2CTxFrame`` since the
+  functionality is not needed.
+
 
 `0.3.0`_ 2021-01-13
 -------------------

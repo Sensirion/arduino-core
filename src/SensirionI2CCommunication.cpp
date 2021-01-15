@@ -38,22 +38,6 @@
 #include "SensirionI2CRxFrame.h"
 #include "SensirionI2CTxFrame.h"
 
-static uint8_t generateCRC(const uint8_t* data, size_t count) {
-    uint8_t crc = 0xFF;
-
-    /* calculates 8-Bit checksum with given polynomial */
-    for (size_t current_byte = 0; current_byte < count; ++current_byte) {
-        crc ^= (data[current_byte]);
-        for (uint8_t crc_bit = 8; crc_bit > 0; --crc_bit) {
-            if (crc & 0x80)
-                crc = (crc << 1) ^ 0x31;
-            else
-                crc = (crc << 1);
-        }
-    }
-    return crc;
-}
-
 static void clearRxBuffer(TwoWire& i2cBus) {
     while (i2cBus.available()) {
         (void)i2cBus.read();
@@ -108,7 +92,8 @@ uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
         frame._buffer[i++] = i2cBus.read();
         frame._buffer[i++] = i2cBus.read();
         uint8_t actualCRC = i2cBus.read();
-        uint8_t expectedCRC = generateCRC(&frame._buffer[i - 2], 2);
+        uint8_t expectedCRC =
+            SensirionI2CTxFrame::_generateCRC(&frame._buffer[i - 2], 2);
         if (actualCRC != expectedCRC) {
             clearRxBuffer(i2cBus);
             return ReadError | CRCError;
