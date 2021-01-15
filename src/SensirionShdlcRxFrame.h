@@ -37,22 +37,41 @@
 #include "SensirionRxFrame.h"
 #include "SensirionShdlcCommunication.h"
 
+/**
+ * SenirionShdlcRxFrame - Class which decodes the through UART received data
+ * into common data types. It contains a buffer which is filled by the
+ * SensirionShdlcCommunication class. By calling the different decode function
+ * inherited from the SensirionRxFrame base class the raw data can be decoded
+ * into different data types. In addition to that it also stores the four
+ * header bytes defined by the SHDLC protocol state, command, address,
+ * datalength. These bytes can be read out by the corresponding getter method.
+ */
 class SensirionShdlcRxFrame : public SensirionRxFrame {
 
     friend class SensirionShdlcCommunication;
 
   public:
+    /**
+     * Constructor
+     *
+     * @param buffer     Buffer in which the receive frame will be stored.
+     * @param bufferSize Number of bytes in the buffer for the receive frame.
+     */
     SensirionShdlcRxFrame(uint8_t buffer[], size_t bufferSize)
         : SensirionRxFrame(buffer, bufferSize){};
+
     uint8_t getAddress(void) const {
         return _address;
     };
+
     uint8_t getCommand(void) const {
         return _command;
     };
+
     uint8_t getState(void) const {
         return _state;
     };
+
     uint8_t getDataLength(void) const {
         return _dataLength;
     };

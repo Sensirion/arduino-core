@@ -113,12 +113,12 @@ uint16_t SensirionRxFrame::getFloat(float& data) {
     return error;
 }
 
-uint16_t SensirionRxFrame::getBytes(uint8_t data[], size_t maxAmount) {
+uint16_t SensirionRxFrame::getBytes(uint8_t data[], size_t maxBytes) {
     if (_numBytes < 1) {
         return RxFrameError | NoDataError;
     }
-    size_t readAmount = maxAmount;
-    if (_numBytes < maxAmount) {
+    size_t readAmount = maxBytes;
+    if (_numBytes < maxBytes) {
         readAmount = _numBytes;
     }
     for (size_t i = 0; i < readAmount; i++) {

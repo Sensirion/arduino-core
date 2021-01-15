@@ -43,10 +43,37 @@
 class SensirionI2CTxFrame;
 class SensirionI2CRxFrame;
 
+/*
+ * SensirionI2CCommunication - Class which is responsible for the communication
+ * via a I2C bus. It provides functionality to send and receive frames from a
+ * Sensirion sensor. The data is sent and received in a SensirionI2cTxFrame or
+ * SensirionI2cRxFrame respectively.
+ */
 class SensirionI2CCommunication {
   public:
+    /**
+     * sendFrame() - Sends frame to sensor
+     *
+     * @param address I2C address of the sensor.
+     * @param frame   Tx frame object containing a finished frame to send to
+     *                the sensor.
+     * @param i2cBus  TwoWire object to communicate with the sensor.
+     *
+     * @return        NoError on success, an error code otherwise
+     */
     static uint16_t sendFrame(uint8_t address, SensirionI2CTxFrame& frame,
                               TwoWire& i2cBus);
+
+    /**
+     * receiveFrame() - Receive Frame from sensor
+     *
+     * @param address  I2C address of the sensor.
+     * @param numBytes Number of bytes to receive.
+     * @param frame    Rx frame to store the received data in.
+     * @param i2cBus   TwoWire object to communicate with the sensor.
+     *
+     * @return        NoError on success, an error code otherwise
+     */
     static uint16_t receiveFrame(uint8_t address, size_t numBytes,
                                  SensirionI2CRxFrame& frame, TwoWire& i2cBus);
 };

@@ -66,6 +66,15 @@ enum LowLevelError : uint16_t {
     InternalBufferSizeError
 };
 
+/**
+ * errorToString() - Convert error code to a human readable error message
+ *
+ * @param error            Error code to be converted.
+ * @param errorMessage     String where the error text can be
+ *                         stored.
+ * @param errorMessageSize Size in bytes of the string buffer for the error
+ *                         message.
+ */
 void errorToString(uint16_t error, char errorMessage[],
                    size_t errorMessageSize);
 

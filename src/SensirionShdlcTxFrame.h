@@ -36,29 +36,137 @@
 
 #include "SensirionShdlcCommunication.h"
 
+/*
+ * SensirionShdlcTxFrame - Class which helps to build a correct SHDLC frame.
+ * The begin() functions writes the header. The different addDatatype()
+ * functions add the frame data and the finish() function writes the tail.
+ * Using these functions one can easily construct a SHDLC frame.
+ */
 class SensirionShdlcTxFrame {
 
     friend class SensirionShdlcCommunication;
 
   public:
+    /**
+     * Constructor
+     *
+     * @param buffer     Buffer in which the send frame will be stored.
+     * @param bufferSize Number of bytes in the buffer for the send frame.
+     */
     SensirionShdlcTxFrame(uint8_t buffer[], size_t bufferSize)
         : _buffer(buffer), _bufferSize(bufferSize) {
     }
 
+    /**
+     * addUInt32() - Add unsigned 32bit integer to the send frame.
+     *
+     * @param data Unsigned 32bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t addUInt32(uint32_t data);
+
+    /**
+     * addInt32() - Add signed 32bit integer to the send frame.
+     *
+     * @param data Signed 32bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t addInt32(int32_t data);
+
+    /**
+     * addUInt16() - Add unsigned 16bit integer to the send frame.
+     *
+     * @param data Unsigned 16bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t addUInt16(uint16_t data);
+
+    /**
+     * addInt16() - Add signed 16bit integer to the send frame.
+     *
+     * @param data Signed 16bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t addInt16(int16_t data);
+
+    /**
+     * addUInt8() - Add unsigned 8bit integer to the send frame.
+     *
+     * @param data Unsigned 8bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t addUInt8(uint8_t data);
+
+    /**
+     * addInt8() - Add signed 8bit integer to the send frame.
+     *
+     * @param data Signed 8bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t addInt8(int8_t data);
+
+    /**
+     * addBool() - Add boolean to the send frame.
+     *
+     * @param data Boolean to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t addBool(bool data);
+
+    /**
+     * addFloat() - Add float to the send frame.
+     *
+     * @param data Float to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t addFloat(float data);
+
+    /**
+     * addBytes() - Add byte array to the send frame.
+     *
+     * @param data       Byte array to add to the send frame.
+     * @param dataLength Number of bytes to add to the send frame.
+     *
+     * @return           NoError on success, an error code otherwise
+     */
     uint16_t addBytes(uint8_t data[], size_t dataLength);
+
+    /**
+     * begin() - Begin frame and write header.
+     *
+     * @note This function needs to be called before calling other
+     *       data add functions to write the header at the beginning.
+     *
+     * @param command    Command byte to add to the send frame.
+     * @param address    Address byte to add to the send frame.
+     * @param dataLength Data length byte to add to the send frame.
+     *
+     * @return           NoError on success, an error code otherwise
+     */
     uint16_t begin(uint8_t command, uint8_t address, uint8_t dataLength);
+
+    /**
+     * finish() - Finish frame and write tail.
+     *
+     * @note This function needs to be called last, after adding all
+     *       data to frame and before sending the frame to the sensor.
+     *
+     * @return NoError on success, an error code otherwise
+     */
     uint16_t finish(void);
+
     uint8_t getCommand(void) const {
         return _command;
     };
+
     uint8_t getAddress(void) const {
         return _address;
     }

@@ -37,11 +37,26 @@
 #include "SensirionI2CCommunication.h"
 #include "SensirionRxFrame.h"
 
+/**
+ * SenirionI2CRxFrame - Class which decodes the through I2C received data into
+ * common data types. It contains a buffer which is filled by the
+ * SensirionI2CCommunication class. By calling the different decode function
+ * inherited from the SensirionRxFrame base class the raw data can be decoded
+ * into different data types.
+ */
 class SensirionI2CRxFrame : public SensirionRxFrame {
 
     friend class SensirionI2CCommunication;
 
   public:
+    /**
+     * Constructor
+     *
+     * @param buffer     Buffer in which the receive frame will be
+     *                   stored.
+     * @param bufferSize Number of bytes in the buffer for the receive frame.
+     *
+     */
     SensirionI2CRxFrame(uint8_t buffer[], size_t bufferSize)
         : SensirionRxFrame(buffer, bufferSize){};
 };
