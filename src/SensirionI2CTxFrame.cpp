@@ -101,7 +101,7 @@ uint16_t SensirionI2CTxFrame::addCommand(uint16_t command) {
     return NoError;
 }
 
-static uint8_t generateCRC(const uint8_t* data, size_t count) {
+uint8_t SensirionI2CTxFrame::_generateCRC(const uint8_t* data, size_t count) {
     uint8_t crc = 0xFF;
 
     /* calculates 8-Bit checksum with given polynomial */
@@ -126,7 +126,7 @@ uint16_t SensirionI2CTxFrame::_addByte(uint8_t data) {
         if (_bufferSize <= _index) {
             return TxFrameError | BufferSizeError;
         }
-        uint8_t crc = generateCRC(&_buffer[_index - 2], 2);
+        uint8_t crc = _generateCRC(&_buffer[_index - 2], 2);
         _buffer[_index++] = crc;
     }
     return NoError;
