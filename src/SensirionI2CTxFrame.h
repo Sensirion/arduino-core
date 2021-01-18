@@ -56,6 +56,15 @@ class SensirionI2CTxFrame {
     SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize);
 
     /**
+     * addCommand() - Add command to the send frame.
+     *
+     * @param command Command to add to the send frame.
+     *
+     * @return        NoError on success, an error code otherwise
+     */
+    uint16_t addCommand(uint16_t command);
+
+    /**
      * addUInt32() - Add unsigned 32bit integer to the send frame.
      *
      * @param data Unsigned 32bit integer to add to the send frame.
@@ -136,15 +145,6 @@ class SensirionI2CTxFrame {
      * @return           NoError on success, an error code otherwise
      */
     uint16_t addBytes(uint8_t data[], size_t dataLength);
-
-    /**
-     * addCommand() - Add command to the send frame.
-     *
-     * @param command Command to add to the send frame.
-     *
-     * @return        NoError on success, an error code otherwise
-     */
-    uint16_t addCommand(uint16_t command);
 
   private:
     static uint8_t _generateCRC(const uint8_t* data, size_t count);

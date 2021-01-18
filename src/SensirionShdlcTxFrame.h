@@ -58,6 +58,30 @@ class SensirionShdlcTxFrame {
     }
 
     /**
+     * begin() - Begin frame and write header.
+     *
+     * @note This function needs to be called before calling other
+     *       data add functions to write the header at the beginning.
+     *
+     * @param command    Command byte to add to the send frame.
+     * @param address    Address byte to add to the send frame.
+     * @param dataLength Data length byte to add to the send frame.
+     *
+     * @return           NoError on success, an error code otherwise
+     */
+    uint16_t begin(uint8_t command, uint8_t address, uint8_t dataLength);
+
+    /**
+     * finish() - Finish frame and write tail.
+     *
+     * @note This function needs to be called last, after adding all
+     *       data to frame and before sending the frame to the sensor.
+     *
+     * @return NoError on success, an error code otherwise
+     */
+    uint16_t finish(void);
+
+    /**
      * addUInt32() - Add unsigned 32bit integer to the send frame.
      *
      * @param data Unsigned 32bit integer to add to the send frame.
@@ -138,30 +162,6 @@ class SensirionShdlcTxFrame {
      * @return           NoError on success, an error code otherwise
      */
     uint16_t addBytes(uint8_t data[], size_t dataLength);
-
-    /**
-     * begin() - Begin frame and write header.
-     *
-     * @note This function needs to be called before calling other
-     *       data add functions to write the header at the beginning.
-     *
-     * @param command    Command byte to add to the send frame.
-     * @param address    Address byte to add to the send frame.
-     * @param dataLength Data length byte to add to the send frame.
-     *
-     * @return           NoError on success, an error code otherwise
-     */
-    uint16_t begin(uint8_t command, uint8_t address, uint8_t dataLength);
-
-    /**
-     * finish() - Finish frame and write tail.
-     *
-     * @note This function needs to be called last, after adding all
-     *       data to frame and before sending the frame to the sensor.
-     *
-     * @return NoError on success, an error code otherwise
-     */
-    uint16_t finish(void);
 
     uint8_t getCommand(void) const {
         return _command;

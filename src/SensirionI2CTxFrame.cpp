@@ -40,6 +40,15 @@ SensirionI2CTxFrame::SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize)
     : _buffer(buffer), _bufferSize(bufferSize), _index(2) {
 }
 
+uint16_t SensirionI2CTxFrame::addCommand(uint16_t command) {
+    if (_bufferSize < 2) {
+        return TxFrameError | BufferSizeError;
+    }
+    _buffer[0] = static_cast<uint8_t>((command & 0xFF00) >> 8);
+    _buffer[1] = static_cast<uint8_t>((command & 0x00FF) >> 0);
+    return NoError;
+}
+
 uint16_t SensirionI2CTxFrame::addUInt32(uint32_t data) {
     uint16_t error = _addByte(static_cast<uint8_t>((data & 0xFF000000) >> 24));
     error |= _addByte(static_cast<uint8_t>((data & 0x00FF0000) >> 16));
@@ -90,15 +99,6 @@ uint16_t SensirionI2CTxFrame::addBytes(uint8_t data[], size_t dataLength) {
         error |= _addByte(data[i]);
     }
     return error;
-}
-
-uint16_t SensirionI2CTxFrame::addCommand(uint16_t command) {
-    if (_bufferSize < 2) {
-        return TxFrameError | BufferSizeError;
-    }
-    _buffer[0] = static_cast<uint8_t>((command & 0xFF00) >> 8);
-    _buffer[1] = static_cast<uint8_t>((command & 0x00FF) >> 0);
-    return NoError;
 }
 
 uint8_t SensirionI2CTxFrame::_generateCRC(const uint8_t* data, size_t count) {
