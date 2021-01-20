@@ -42,11 +42,50 @@
 class SensirionShdlcTxFrame;
 class SensirionShdlcRxFrame;
 
+/*
+ * SensirionShdlcCommunication - Class which is responsible for the
+ * communication via a UART (Serial) interface. It provides functionality to
+ * send and receive frames from a Sensirion sensor. The data is sent and
+ * received in a SensirionShdlcTxFrame or SensirionShdlcRxFrame respectively.
+ */
 class SensirionShdlcCommunication {
+
   public:
+    /**
+     * sendFrame() - Sends frame to sensor
+     *
+     * @param frame  Tx frame object containing a finished frame to send to the
+     *               sensor.
+     * @param serial Stream object to communicate with the sensor.
+     *
+     * @return       NoError on success, an error code otherwise
+     */
     static uint16_t sendFrame(SensirionShdlcTxFrame& frame, Stream& serial);
+
+    /**
+     * receiveFrame() - Receive Frame from sensor
+     *
+     * @param frame         Rx frame to store the received data in.
+     * @param serial        Stream object to communicate with the sensor.
+     * @param timeoutMicros Timeout in micro seconds for the receive operation.
+     *
+     * @return              NoError on success, an error code otherwise
+     */
     static uint16_t receiveFrame(SensirionShdlcRxFrame& frame, Stream& serial,
                                  unsigned long timeoutMicros);
+
+    /**
+     * sendAndReceiveFrame() - Send and receive a frame from sensor.
+     *
+     * @param serial          Stream object to communicate with the sensor.
+     * @param txFrame         Tx frame object containing a finished frame to
+     *                        send to the sensor.
+     * @param rxFrame         Rx frame to store the received data in.
+     * @param rxTimeoutMicros Timeout in micro seconds for the receive
+     *                        operation.
+     *
+     * @return                NoError on success, an error code otherwise
+     */
     static uint16_t sendAndReceiveFrame(Stream& serial,
                                         SensirionShdlcTxFrame& txFrame,
                                         SensirionShdlcRxFrame& rxFrame,

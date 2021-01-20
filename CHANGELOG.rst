@@ -9,6 +9,14 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 `Unreleased`_
 -------------
 
+`0.4.0`_ 2021-01-20
+-------------------
+
+Added
+.....
+
+- Documentation for all functions.
+
 Breaking
 ........
 
@@ -72,7 +80,8 @@ Removed
 - Initial release
 
 
-.. _Unreleased: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.3.0...main
+.. _Unreleased: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.4.0...main
+.. _0.4.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.3.0...0.4.0
 .. _0.3.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.2.0...0.3.0
 .. _0.2.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.1.0...0.2.0
 .. _0.1.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/releases/tag/0.1.0

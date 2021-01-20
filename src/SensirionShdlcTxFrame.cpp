@@ -36,6 +36,30 @@
 
 #include "SensirionErrors.h"
 
+uint16_t SensirionShdlcTxFrame::begin(uint8_t command, uint8_t address,
+                                      uint8_t dataLength) {
+    _buffer[_index++] = 0x7e;
+    uint16_t error = addUInt8(address);
+    error |= addUInt8(command);
+    error |= addUInt8(dataLength);
+    _command = command;
+    _address = address;
+    return error;
+}
+
+uint16_t SensirionShdlcTxFrame::finish(void) {
+    uint16_t error = addUInt8(~_checksum);
+    if (error) {
+        return error;
+    }
+    if (_index + 1 > _bufferSize) {
+        return TxFrameError | BufferSizeError;
+    }
+    _buffer[_index++] = 0x7e;
+    _isFinished = true;
+    return NoError;
+}
+
 uint16_t SensirionShdlcTxFrame::addUInt32(uint32_t data) {
     uint16_t error = addUInt8(static_cast<uint8_t>((data & 0xFF000000) >> 24));
     error |= addUInt8(static_cast<uint8_t>((data & 0x00FF0000) >> 16));
@@ -102,28 +126,4 @@ uint16_t SensirionShdlcTxFrame::addBytes(uint8_t data[], size_t dataLength) {
         error |= addUInt8(data[i]);
     }
     return error;
-}
-
-uint16_t SensirionShdlcTxFrame::begin(uint8_t command, uint8_t address,
-                                      uint8_t dataLength) {
-    _buffer[_index++] = 0x7e;
-    uint16_t error = addUInt8(address);
-    error |= addUInt8(command);
-    error |= addUInt8(dataLength);
-    _command = command;
-    _address = address;
-    return error;
-}
-
-uint16_t SensirionShdlcTxFrame::finish(void) {
-    uint16_t error = addUInt8(~_checksum);
-    if (error) {
-        return error;
-    }
-    if (_index + 1 > _bufferSize) {
-        return TxFrameError | BufferSizeError;
-    }
-    _buffer[_index++] = 0x7e;
-    _isFinished = true;
-    return NoError;
 }

@@ -36,22 +36,115 @@
 
 #include "SensirionI2CCommunication.h"
 
+/*
+ * SensirionI2CTxFrame - Class which helps to build a correct I2C frame for
+ * Sensirion Sensors. The different addDatatype() functions add the frame data
+ * and the addCommand() function writes the command at the beginning. Using
+ * these functions one can easily construct a I2C frame for Sensirion sensors.
+ */
 class SensirionI2CTxFrame {
 
     friend class SensirionI2CCommunication;
 
   public:
+    /**
+     * Constructor
+     *
+     * @param buffer     Buffer in which the send frame will be stored.
+     * @param bufferSize Number of bytes in the buffer for the send frame.
+     */
     SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize);
-    uint16_t addUInt32(uint32_t data);
-    uint16_t addInt32(int32_t data);
-    uint16_t addUInt16(uint16_t data);
-    uint16_t addInt16(int16_t data);
-    uint16_t addUInt8(uint8_t data);
-    uint16_t addInt8(int8_t data);
-    uint16_t addBool(bool data);
-    uint16_t addFloat(float data);
-    uint16_t addBytes(uint8_t data[], size_t dataLength);
+
+    /**
+     * addCommand() - Add command to the send frame.
+     *
+     * @param command Command to add to the send frame.
+     *
+     * @return        NoError on success, an error code otherwise
+     */
     uint16_t addCommand(uint16_t command);
+
+    /**
+     * addUInt32() - Add unsigned 32bit integer to the send frame.
+     *
+     * @param data Unsigned 32bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t addUInt32(uint32_t data);
+
+    /**
+     * addInt32() - Add signed 32bit integer to the send frame.
+     *
+     * @param data Signed 32bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t addInt32(int32_t data);
+
+    /**
+     * addUInt16() - Add unsigned 16bit integer to the send frame.
+     *
+     * @param data Unsigned 16bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t addUInt16(uint16_t data);
+
+    /**
+     * addInt16() - Add signed 16bit integer to the send frame.
+     *
+     * @param data Signed 16bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t addInt16(int16_t data);
+
+    /**
+     * addUInt8() - Add unsigned 8bit integer to the send frame.
+     *
+     * @param data Unsigned 8bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t addUInt8(uint8_t data);
+
+    /**
+     * addInt8() - Add signed 8bit integer to the send frame.
+     *
+     * @param data Signed 8bit integer to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t addInt8(int8_t data);
+
+    /**
+     * addBool() - Add boolean to the send frame.
+     *
+     * @param data Boolean to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t addBool(bool data);
+
+    /**
+     * addFloat() - Add float to the send frame.
+     *
+     * @param data Float to add to the send frame.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t addFloat(float data);
+
+    /**
+     * addBytes() - Add byte array to the send frame.
+     *
+     * @param data       Byte array to add to the send frame.
+     * @param dataLength Number of bytes to add to the send frame.
+     *
+     * @return           NoError on success, an error code otherwise
+     */
+    uint16_t addBytes(uint8_t data[], size_t dataLength);
 
   private:
     static uint8_t _generateCRC(const uint8_t* data, size_t count);

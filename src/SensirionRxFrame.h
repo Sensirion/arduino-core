@@ -34,22 +34,108 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+/**
+ * SenirionRxFrame - Base class for SensirionShdlcRxFrame and
+ * SensirionI2cRxFrame. It decodes received data into common data types. The
+ * data is contained in a buffer which is filled by the one of the two
+ * communication classes. By calling the different decode function the raw data
+ * can be decoded into different data types.
+ */
 class SensirionRxFrame {
 
     friend class SensirionI2CCommunication;
     friend class SensirionShdlcCommunication;
 
   public:
+    /**
+     * Constructor
+     *
+     * @param buffer     Buffer in which the receive frame will be stored.
+     * @param bufferSize Number of bytes in the buffer for the receive frame.
+     */
     SensirionRxFrame(uint8_t buffer[], size_t bufferSize);
+
+    /**
+     * getUInt32() - Get unsigned 32bit integer from the received data.
+     *
+     * @param data Memory to store unsigned 32bit integer in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t getUInt32(uint32_t& data);
+
+    /**
+     * getInt32() - Get signed 32bit integer from the received data.
+     *
+     * @param data Memory to store signed 32bit integer in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t getInt32(int32_t& data);
+
+    /**
+     * getUInt16() - Get unsigned 16bit integer from the received data.
+     *
+     * @param data Memory to store unsigned 16bit integer in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t getUInt16(uint16_t& data);
+
+    /**
+     * getInt16() - Get signed 16bit integer from the received data.
+     *
+     * @param data Memory to store signed 16bit integer in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t getInt16(int16_t& data);
+
+    /**
+     * getUInt8() - Get unsigned 8bit integer from the received data.
+     *
+     * @param data Memory to store unsigned 8bit integer in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t getUInt8(uint8_t& data);
+
+    /**
+     * getInt8() - Get signed 8bit integer from the received data.
+     *
+     * @param data Memory to store signed 8bit integer in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t getInt8(int8_t& data);
+
+    /**
+     * getBool() - Get Boolean from the received data.
+     *
+     * @param data Memory to store boolean in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t getBool(bool& data);
+
+    /**
+     * getFloat() - Get float from the received data.
+     *
+     * @param data Memory to store float in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
     uint16_t getFloat(float& data);
-    uint16_t getBytes(uint8_t data[], size_t amount);
+
+    /**
+     * getBytes() - Get an array of bytes from the received data.
+     *
+     * @param data     Buffer to store the bytes in.
+     * @param maxBytes Maximal amount of bytes to read from the received data.
+     *
+     * @return          NoError on success, an error code otherwise
+     */
+    uint16_t getBytes(uint8_t data[], size_t maxBytes);
 
   private:
     uint8_t* _buffer = 0;
