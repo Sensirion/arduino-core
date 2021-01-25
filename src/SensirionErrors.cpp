@@ -51,7 +51,21 @@ void errorToString(uint16_t error, char errorMessage[],
                     strncpy(errorMessage, "Error writing to serial",
                             errorMessageSize);
                     return;
-                case LowLevelError::I2CWriteError:
+                case LowLevelError::InternalBufferSizeError:
+                    strncpy(errorMessage,
+                            "Data too long to fit in transmit buffer",
+                            errorMessageSize);
+                    return;
+                case LowLevelError::I2cAddressNack:
+                    strncpy(errorMessage,
+                            "Received NACK on transmit of address",
+                            errorMessageSize);
+                    return;
+                case LowLevelError::I2cDataNack:
+                    strncpy(errorMessage, "Received NACK on transmit of data",
+                            errorMessageSize);
+                    return;
+                case LowLevelError::I2cOtherError:
                     strncpy(errorMessage, "Error writing to I2C bus",
                             errorMessageSize);
                     return;

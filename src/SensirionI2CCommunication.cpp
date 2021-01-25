@@ -49,11 +49,24 @@ uint16_t SensirionI2CCommunication::sendFrame(uint8_t address,
                                               TwoWire& i2cBus) {
     i2cBus.beginTransmission(address);
     size_t writtenBytes = i2cBus.write(frame._buffer, frame._index);
-    i2cBus.endTransmission();
+    uint8_t i2c_error = i2cBus.endTransmission();
     if (writtenBytes != frame._index) {
-        return WriteError | I2CWriteError;
+        return WriteError | I2cOtherError;
     }
-    return NoError;
+    // translate Arduino errors, see
+    // https://www.arduino.cc/en/Reference/WireEndTransmission
+    switch (i2c_error) {
+        case 0:
+            return NoError;
+        case 1:
+            return WriteError | InternalBufferSizeError;
+        case 2:
+            return WriteError | I2cAddressNack;
+        case 3:
+            return WriteError | I2cDataNack;
+        default:
+            return WriteError | I2cOtherError;
+    }
 }
 
 uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
