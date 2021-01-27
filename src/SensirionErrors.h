@@ -61,9 +61,11 @@ enum LowLevelError : uint16_t {
     // i2c errors
     WrongNumberBytesError,
     CRCError,
-    I2CWriteError,
+    I2cAddressNack,
+    I2cDataNack,
+    I2cOtherError,
     NotEnoughDataError,
-    InternalBufferSizeError
+    InternalBufferSizeError,
 };
 
 /**
