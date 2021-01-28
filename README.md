@@ -9,7 +9,7 @@ sensor driver libraries provided here:
 
 # More Drivers
 
-Not looking for Ardunio drivers? Check out our other drivers here:
+Not looking for Arduino drivers? Check out our other drivers here:
 
 - [Embedded](https://github.com/Sensirion/info#repositories)
 - [Python](https://github.com/Sensirion/info#python-drivers)
