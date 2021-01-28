@@ -4,6 +4,7 @@ This library provides SHDLC and I2C protocol implementations for Sensirion
 sensors. There shouldn't be a reason to use it directly, but is required by the
 sensor driver libraries provided here:
 
+- [SCD4x](https://github.com/Sensirion/arduino-i2c-scd4x)
 - [SVM40]() - *coming soon*
 - [SFA3x]() - *coming soon*
 
