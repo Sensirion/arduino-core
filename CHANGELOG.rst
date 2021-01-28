@@ -6,13 +6,14 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
-`Unreleased`_
--------------
+`0.4.1`_ 2021-01-28
+-------------------
 
 Fixed
 .....
 
 - Properly handle I2C write errors
+
 
 `0.4.0`_ 2021-01-20
 -------------------
@@ -85,7 +86,8 @@ Removed
 - Initial release
 
 
-.. _Unreleased: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.4.0...main
+.. _Unreleased: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.4.1...main
+.. _0.4.1: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.4.0...0.4.1
 .. _0.4.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.3.0...0.4.0
 .. _0.3.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.2.0...0.3.0
 .. _0.2.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.1.0...0.2.0
