@@ -1,8 +1,5 @@
 /*
- *
- * THIS IS A LEGACY FILE AND WILL BE REMOVED SOON.
- *
- * Copyright (c) 2020, Sensirion AG
+ * Copyright (c) 2021, Sensirion AG
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,11 +28,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef _SENSIRION_CORE_ARDUINO_LIBRARY_H_
-#define _SENSIRION_CORE_ARDUINO_LIBRARY_H_
-
-#pragma GCC warning \
-    "Legacy file SensirionCoreArdunioLibrary.h included. Please include SensirionCore.h instead."
+#ifndef _SENSIRION_CORE_H_
+#define _SENSIRION_CORE_H_
 
 #include "SensirionErrors.h"
 #include "SensirionRxFrame.h"
@@ -48,4 +42,4 @@
 #include "SensirionI2CRxFrame.h"
 #include "SensirionI2CTxFrame.h"
 
-#endif /* _SENSIRION_CORE_ARDUION_LIBRARY_H_ */
+#endif /* _SENSIRION_CORE_H_ */
