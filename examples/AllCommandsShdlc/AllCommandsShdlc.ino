@@ -1,4 +1,4 @@
-#include <SensirionCoreArduinoLibrary.h>
+#include <SensirionCore.h>
 #include <stdint.h>
 
 uint8_t txBuffer[256];

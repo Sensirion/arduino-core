@@ -1,4 +1,4 @@
-#include <SensirionCoreArduinoLibrary.h>
+#include <SensirionCore.h>
 #include <Wire.h>
 #include <stdint.h>
 
