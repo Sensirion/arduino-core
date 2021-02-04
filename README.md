@@ -5,8 +5,10 @@ sensors. There shouldn't be a reason to use it directly, but is required by the
 sensor driver libraries provided here:
 
 - [SCD4x](https://github.com/Sensirion/arduino-i2c-scd4x)
-- [SVM40]() - *coming soon*
-- [SFA3x]() - *coming soon*
+- [SVM40-I2C](https://github.com/Sensirion/arduino-i2c-svm40)
+- [SVM40-UART](https://github.com/Sensirion/arduino-uart-svm40)
+- [SFA3x-I2C](https://github.com/Sensirion/arduino-i2c-sfa3x)
+- [SFA3x-UART](https://github.com/Sensirion/arduino-uart-sfa3x)
 
 # More Drivers
 
