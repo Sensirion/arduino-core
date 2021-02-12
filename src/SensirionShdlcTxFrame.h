@@ -161,7 +161,7 @@ class SensirionShdlcTxFrame {
      *
      * @return           NoError on success, an error code otherwise
      */
-    uint16_t addBytes(uint8_t data[], size_t dataLength);
+    uint16_t addBytes(const uint8_t data[], size_t dataLength);
 
     uint8_t getCommand(void) const {
         return _command;
