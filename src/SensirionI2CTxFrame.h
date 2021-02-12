@@ -144,7 +144,7 @@ class SensirionI2CTxFrame {
      *
      * @return           NoError on success, an error code otherwise
      */
-    uint16_t addBytes(uint8_t data[], size_t dataLength);
+    uint16_t addBytes(const uint8_t data[], size_t dataLength);
 
   private:
     static uint8_t _generateCRC(const uint8_t* data, size_t count);

@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+`0.4.3`_ 2021-02-12
+-------------------
+
+Added
+.....
+
+- Added ``const`` modifier to functions which process MOSI array data.
+
 `0.4.2`_ 2021-01-29
 -------------------
 
@@ -95,9 +103,11 @@ Removed
 - Initial release
 
 
-.. _Unreleased: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.4.1...main
-.. _0.4.1: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.4.0...0.4.1
-.. _0.4.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.3.0...0.4.0
-.. _0.3.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.2.0...0.3.0
-.. _0.2.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/compare/0.1.0...0.2.0
-.. _0.1.0: https://github.com/Sensirion/Sensirion_Core_Arduino_Library/releases/tag/0.1.0
+.. _Unreleased: https://github.com/Sensirion/arduino-core/compare/0.4.3...main
+.. _0.4.3: https://github.com/Sensirion/arduino-core/compare/0.4.2...0.4.3
+.. _0.4.2: https://github.com/Sensirion/arduino-core/compare/0.4.1...0.4.2
+.. _0.4.1: https://github.com/Sensirion/arduino-core/compare/0.4.0...0.4.1
+.. _0.4.0: https://github.com/Sensirion/arduino-core/compare/0.3.0...0.4.0
+.. _0.3.0: https://github.com/Sensirion/arduino-core/compare/0.2.0...0.3.0
+.. _0.2.0: https://github.com/Sensirion/arduino-core/compare/0.1.0...0.2.0
+.. _0.1.0: https://github.com/Sensirion/arduino-core/releases/tag/0.1.0

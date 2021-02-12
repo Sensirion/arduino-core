@@ -93,7 +93,8 @@ uint16_t SensirionI2CTxFrame::addFloat(float data) {
     return addUInt32(convert.uInt32Data);
 }
 
-uint16_t SensirionI2CTxFrame::addBytes(uint8_t data[], size_t dataLength) {
+uint16_t SensirionI2CTxFrame::addBytes(const uint8_t data[],
+                                       size_t dataLength) {
     uint16_t error = 0;
     for (size_t i = 0; i < dataLength; i++) {
         error |= _addByte(data[i]);
