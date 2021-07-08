@@ -31,12 +31,6 @@
 #ifndef SENSIRION_I2C_TX_FRAME_H_
 #define SENSIRION_I2C_TX_FRAME_H_
 
-#if defined(__GNUC__) || defined(__clang__)
-#define DEPRECATED __attribute__((deprecated))
-#else
-#define DEPRECATED
-#endif
-
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -76,13 +70,16 @@ class SensirionI2CTxFrame {
     static SensirionI2CTxFrame createWithUInt16Command(uint16_t command,
                                                        uint8_t buffer[],
                                                        size_t bufferSize);
+
     /**
      * Constructor
      *
      * @param buffer     Buffer in which the send frame will be stored.
      * @param bufferSize Number of bytes in the buffer for the send frame.
+     *
+     * @deprecated Use createWithUInt16Command() instead
      */
-    DEPRECATED SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize);
+    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize);
 
     /**
      * addCommand() - Add command to the send frame.
@@ -90,8 +87,10 @@ class SensirionI2CTxFrame {
      * @param command Command to add to the send frame.
      *
      * @return        NoError on success, an error code otherwise
+     *
+     * @deprecated Use createWithUInt16Command() instead
      */
-    DEPRECATED uint16_t addCommand(uint16_t command);
+    uint16_t addCommand(uint16_t command);
 
     /**
      * addUInt32() - Add unsigned 32bit integer to the send frame.
@@ -177,8 +176,11 @@ class SensirionI2CTxFrame {
 
   private:
     SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize, size_t index);
+
     static uint8_t _generateCRC(const uint8_t* data, size_t count);
+
     uint16_t _addByte(uint8_t data);
+
     uint8_t* _buffer;
     size_t _bufferSize;
     size_t _index;
