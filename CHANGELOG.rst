@@ -6,6 +6,15 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+`0.5.2`_ 2021-08-03
+-------------------
+
+Fixed
+.....
+
+- Fix CRC insertion in ``SensirionI2CTxFrame`` when more then one parameter
+  is sent to the sensor.
+
 `0.5.1`_ 2021-07-08
 -------------------
 
@@ -13,7 +22,6 @@ Changed
 .......
 
 - Adjusted deprecation warnings
-
 
 `0.5.0`_ 2021-07-07
 -------------------
@@ -121,7 +129,8 @@ Removed
 - Initial release
 
 
-.. _Unreleased: https://github.com/Sensirion/arduino-core/compare/0.5.1...main
+.. _Unreleased: https://github.com/Sensirion/arduino-core/compare/0.5.2...main
+.. _0.5.2: https://github.com/Sensirion/arduino-core/compare/0.5.1...0.5.2
 .. _0.5.1: https://github.com/Sensirion/arduino-core/compare/0.5.0...0.5.1
 .. _0.5.0: https://github.com/Sensirion/arduino-core/compare/0.4.3...0.5.0
 .. _0.4.3: https://github.com/Sensirion/arduino-core/compare/0.4.2...0.4.3
