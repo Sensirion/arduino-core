@@ -37,8 +37,9 @@
 #include "SensirionErrors.h"
 
 SensirionI2CTxFrame::SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
-                                         size_t index)
-    : _buffer(buffer), _bufferSize(bufferSize), _index(index) {
+                                         size_t numCommandBytes)
+    : _buffer(buffer), _bufferSize(bufferSize), _index(numCommandBytes),
+      _numCommandBytes(numCommandBytes) {
 }
 
 SensirionI2CTxFrame::SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize)
@@ -57,7 +58,8 @@ SensirionI2CTxFrame
 SensirionI2CTxFrame::createWithUInt16Command(uint16_t command, uint8_t buffer[],
                                              size_t bufferSize) {
     SensirionI2CTxFrame instance = SensirionI2CTxFrame(buffer, bufferSize, 2);
-    instance.addCommand(command);
+    instance._buffer[0] = static_cast<uint8_t>((command & 0xFF00) >> 8);
+    instance._buffer[1] = static_cast<uint8_t>((command & 0x00FF) >> 0);
     return instance;
 }
 
@@ -144,7 +146,7 @@ uint16_t SensirionI2CTxFrame::_addByte(uint8_t data) {
         return TxFrameError | BufferSizeError;
     }
     _buffer[_index++] = data;
-    if (_index % 2 == 0) {
+    if ((_index - _numCommandBytes) % 3 == 2) {
         if (_bufferSize <= _index) {
             return TxFrameError | BufferSizeError;
         }
