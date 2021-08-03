@@ -175,7 +175,8 @@ class SensirionI2CTxFrame {
     uint16_t addBytes(const uint8_t data[], size_t dataLength);
 
   private:
-    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize, size_t index);
+    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
+                        size_t numCommandBytes);
 
     static uint8_t _generateCRC(const uint8_t* data, size_t count);
 
@@ -184,6 +185,7 @@ class SensirionI2CTxFrame {
     uint8_t* _buffer;
     size_t _bufferSize;
     size_t _index;
+    size_t _numCommandBytes;
 };
 
 #endif /* SENSIRION_I2C_TX_FRAME_H_ */
