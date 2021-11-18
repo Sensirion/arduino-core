@@ -36,8 +36,16 @@
 
 void errorToString(uint16_t error, char errorMessage[],
                    size_t errorMessageSize) {
+
     uint16_t highLevelError = error & 0xFF00;
     uint16_t lowLevelError = error & 0x00FF;
+
+    if (error & HighLevelError::SensorSpecificError) {
+        snprintf(errorMessage, errorMessageSize, "Sensor specific error: 0x%2x",
+                 lowLevelError);
+        return;
+    }
+
     switch (highLevelError) {
         case HighLevelError::NoError:
             if (!error) {
