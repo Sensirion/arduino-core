@@ -6,8 +6,8 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
-`Unreleased`_
--------------
+`0.5.3`_ 2021-10-19
+-------------------
 
 - Add support for sensor specific errors
 
@@ -135,7 +135,8 @@ Removed
 - Initial release
 
 
-.. _Unreleased: https://github.com/Sensirion/arduino-core/compare/0.5.2...main
+.. _Unreleased: https://github.com/Sensirion/arduino-core/compare/0.5.3...main
+.. _0.5.3: https://github.com/Sensirion/arduino-core/compare/0.5.2...0.5.3
 .. _0.5.2: https://github.com/Sensirion/arduino-core/compare/0.5.1...0.5.2
 .. _0.5.1: https://github.com/Sensirion/arduino-core/compare/0.5.0...0.5.1
 .. _0.5.0: https://github.com/Sensirion/arduino-core/compare/0.4.3...0.5.0
