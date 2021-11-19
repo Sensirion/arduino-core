@@ -42,8 +42,12 @@ enum HighLevelError : uint16_t {
     TxFrameError = 0x0300,
     RxFrameError = 0x0400,
     // shdlc errors
-    ExecutionError = 0x0500
+    ExecutionError = 0x0500,
     // i2c errors
+
+    // Sensor specific errors. All errors higher than that are depending on the
+    // sensor used.
+    SensorSpecificError = 0x8000,
 };
 
 enum LowLevelError : uint16_t {
