@@ -78,6 +78,7 @@ void errorToString(uint16_t error, char errorMessage[],
                             errorMessageSize);
                     return;
             }
+            break;
         case HighLevelError::ReadError:
             switch (lowLevelError) {
                 case LowLevelError::NonemptyFrameError:
@@ -113,6 +114,7 @@ void errorToString(uint16_t error, char errorMessage[],
                         errorMessageSize);
                     return;
             }
+            break;
         case HighLevelError::ExecutionError: {
             char format[] = "Execution error, status register: 0x%x";
             snprintf(errorMessage, errorMessageSize, format, lowLevelError);
@@ -125,6 +127,7 @@ void errorToString(uint16_t error, char errorMessage[],
                             errorMessageSize);
                     return;
             }
+            break;
         case HighLevelError::RxFrameError:
             switch (lowLevelError) {
                 case LowLevelError::BufferSizeError:
