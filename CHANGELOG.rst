@@ -10,6 +10,7 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 -------------------
 
 - Add support for sensor specific errors
+- Update keywords.txt
 
 
 `0.5.2`_ 2021-08-03
