@@ -5,7 +5,7 @@ stages:
 compile_test_shdlc:
     stage: test
     image:
-        name: registry.gitlab.sensirion.lokal/sensirion/docker/docker-arduino:0.4.0
+        name: registry.gitlab.sensirion.lokal/sensirion/docker/docker-arduino:0.5.0
     tags: [docker, linux]
     script:
         - tests/compile_test.py -s examples/AllCommandsShdlc/
@@ -13,7 +13,7 @@ compile_test_shdlc:
 compile_test_i2c:
     stage: test
     image:
-        name: registry.gitlab.sensirion.lokal/sensirion/docker/docker-arduino:0.4.0
+        name: registry.gitlab.sensirion.lokal/sensirion/docker/docker-arduino:0.5.0
     tags: [docker, linux]
     script:
         - tests/compile_test.py -s examples/AllCommandsI2c/
@@ -21,7 +21,7 @@ compile_test_i2c:
 syntax_check:
   stage: validate
   image:
-      name: registry.gitlab.sensirion.lokal/sensirion/docker/docker-python:3.8-20.04-2.3.0
+      name: registry.gitlab.sensirion.lokal/sensirion/docker/docker-python:3.8-20.04-2.7.0
   tags: [linux, docker]
   before_script:
     # For performance and stability reasons, use offline installation.
@@ -33,7 +33,7 @@ syntax_check:
 
 cppcheck:
   stage: validate
-  image: registry.gitlab.sensirion.lokal/sensirion/docker/docker-cppcheck
+  image: registry.gitlab.sensirion.lokal/sensirion/docker/docker-cppcheck:1.0.0
   tags: [linux, docker]
   script:
     - tests/run_cppcheck.sh

@@ -27,7 +27,7 @@ def test_all_boards(sketch):
                  "arduino:avr:nano", "arduino:avr:uno",
                  "esp32:esp32:esp32", "esp8266:esp8266:generic"]
     for board in test_list:
-        if board in (b['FQBN'] for b in board_list['boards']):
+        if board in (b['fqbn'] for b in board_list['boards']):
             log.info('Test compilation for board {}'.format(board))
             command = 'arduino-cli compile  --libraries="." --warnings all'\
                       ' --fqbn {board} {sketch}'.format(board=board,
