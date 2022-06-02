@@ -34,30 +34,33 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "SensirionCrc.h"
 #include "SensirionErrors.h"
 
 SensirionI2CTxFrame::SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
-                                         size_t numCommandBytes)
+                                         size_t numCommandBytes,
+                                         CrcPolynomial poly)
     : _buffer(buffer), _bufferSize(bufferSize), _index(numCommandBytes),
-      _numCommandBytes(numCommandBytes) {
+      _numCommandBytes(numCommandBytes), _polynomial_type(poly) {
 }
 
-SensirionI2CTxFrame::SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize)
-    : SensirionI2CTxFrame(buffer, bufferSize, 2) {
+SensirionI2CTxFrame::SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
+                                         CrcPolynomial poly)
+    : SensirionI2CTxFrame(buffer, bufferSize, 2, poly) {
 }
 
-SensirionI2CTxFrame
-SensirionI2CTxFrame::createWithUInt8Command(uint8_t command, uint8_t buffer[],
-                                            size_t bufferSize) {
-    SensirionI2CTxFrame instance = SensirionI2CTxFrame(buffer, bufferSize, 1);
+SensirionI2CTxFrame SensirionI2CTxFrame::createWithUInt8Command(
+    uint8_t command, uint8_t buffer[], size_t bufferSize, CrcPolynomial poly) {
+    SensirionI2CTxFrame instance =
+        SensirionI2CTxFrame(buffer, bufferSize, 1, poly);
     instance._buffer[0] = command;
     return instance;
 }
 
-SensirionI2CTxFrame
-SensirionI2CTxFrame::createWithUInt16Command(uint16_t command, uint8_t buffer[],
-                                             size_t bufferSize) {
-    SensirionI2CTxFrame instance = SensirionI2CTxFrame(buffer, bufferSize, 2);
+SensirionI2CTxFrame SensirionI2CTxFrame::createWithUInt16Command(
+    uint16_t command, uint8_t buffer[], size_t bufferSize, CrcPolynomial poly) {
+    SensirionI2CTxFrame instance =
+        SensirionI2CTxFrame(buffer, bufferSize, 2, poly);
     instance._buffer[0] = static_cast<uint8_t>((command & 0xFF00) >> 8);
     instance._buffer[1] = static_cast<uint8_t>((command & 0x00FF) >> 0);
     return instance;
@@ -125,22 +128,6 @@ uint16_t SensirionI2CTxFrame::addBytes(const uint8_t data[],
     return error;
 }
 
-uint8_t SensirionI2CTxFrame::_generateCRC(const uint8_t* data, size_t count) {
-    uint8_t crc = 0xFF;
-
-    /* calculates 8-Bit checksum with given polynomial */
-    for (size_t current_byte = 0; current_byte < count; ++current_byte) {
-        crc ^= (data[current_byte]);
-        for (uint8_t crc_bit = 8; crc_bit > 0; --crc_bit) {
-            if (crc & 0x80)
-                crc = (crc << 1) ^ 0x31;
-            else
-                crc = (crc << 1);
-        }
-    }
-    return crc;
-}
-
 uint16_t SensirionI2CTxFrame::_addByte(uint8_t data) {
     if (_bufferSize <= _index) {
         return TxFrameError | BufferSizeError;
@@ -150,7 +137,7 @@ uint16_t SensirionI2CTxFrame::_addByte(uint8_t data) {
         if (_bufferSize <= _index) {
             return TxFrameError | BufferSizeError;
         }
-        uint8_t crc = _generateCRC(&_buffer[_index - 2], 2);
+        uint8_t crc = generateCRC(&_buffer[_index - 2], 2, _polynomial_type);
         _buffer[_index++] = crc;
     }
     return NoError;

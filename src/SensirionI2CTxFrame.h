@@ -34,6 +34,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "SensirionCrc.h"
 #include "SensirionI2CCommunication.h"
 
 /*
@@ -53,11 +54,13 @@ class SensirionI2CTxFrame {
      * @param command    Command to add to the send frame.
      * @param buffer     Buffer in which the send frame will be stored.
      * @param bufferSize Number of bytes in the buffer for the send frame.
+     * @param poly       CRC polynomal to use. Defaults to 0x31 with init 0xFF
+     *
      * @return the constructed SensirionI2CTxFrame.
      */
-    static SensirionI2CTxFrame createWithUInt8Command(uint8_t command,
-                                                      uint8_t buffer[],
-                                                      size_t bufferSize);
+    static SensirionI2CTxFrame
+    createWithUInt8Command(uint8_t command, uint8_t buffer[], size_t bufferSize,
+                           CrcPolynomial poly = CRC31_ff);
 
     /**
      * Factory to create a SensirionI2CTxFrame using a UInt16 command.
@@ -65,21 +68,25 @@ class SensirionI2CTxFrame {
      * @param command    Command to add to the send frame.
      * @param buffer     Buffer in which the send frame will be stored.
      * @param bufferSize Number of bytes in the buffer for the send frame.
+     * @param poly       CRC polynomal to use. Defaults to 0x31 with init 0xFF
+     *
      * @return the constructed SensirionI2CTxFrame.
      */
-    static SensirionI2CTxFrame createWithUInt16Command(uint16_t command,
-                                                       uint8_t buffer[],
-                                                       size_t bufferSize);
+    static SensirionI2CTxFrame
+    createWithUInt16Command(uint16_t command, uint8_t buffer[],
+                            size_t bufferSize, CrcPolynomial poly = CRC31_ff);
 
     /**
      * Constructor
      *
      * @param buffer     Buffer in which the send frame will be stored.
      * @param bufferSize Number of bytes in the buffer for the send frame.
+     * @param poly       CRC polynomal to use. Defaults to 0x31 with init 0xFF
      *
      * @deprecated Use createWithUInt16Command() instead
      */
-    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize);
+    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
+                        CrcPolynomial poly = CRC31_ff);
 
     /**
      * addCommand() - Add command to the send frame.
@@ -176,9 +183,7 @@ class SensirionI2CTxFrame {
 
   private:
     SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
-                        size_t numCommandBytes);
-
-    static uint8_t _generateCRC(const uint8_t* data, size_t count);
+                        size_t numCommandBytes, CrcPolynomial poly = CRC31_ff);
 
     uint16_t _addByte(uint8_t data);
 
@@ -186,6 +191,7 @@ class SensirionI2CTxFrame {
     size_t _bufferSize;
     size_t _index;
     size_t _numCommandBytes;
+    CrcPolynomial _polynomial_type;
 };
 
 #endif /* SENSIRION_I2C_TX_FRAME_H_ */

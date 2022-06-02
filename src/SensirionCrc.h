@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Sensirion AG
+ * Copyright (c) 2022, Sensirion AG
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,19 +28,32 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef _SENSIRION_CORE_H_
-#define _SENSIRION_CORE_H_
 
-#include "SensirionCrc.h"
-#include "SensirionErrors.h"
-#include "SensirionRxFrame.h"
+#ifndef _SENSIRION_CRC_H_
+#define _SENSIRION_CRC_H_
 
-#include "SensirionShdlcCommunication.h"
-#include "SensirionShdlcRxFrame.h"
-#include "SensirionShdlcTxFrame.h"
+#include <stdint.h>
+#include <stdlib.h>
 
-#include "SensirionI2CCommunication.h"
-#include "SensirionI2CRxFrame.h"
-#include "SensirionI2CTxFrame.h"
+enum CrcPolynomial : uint8_t {
+    CRC31_00 = 0x0,
+    CRC31_ff = 0x1,
+};
 
-#endif /* _SENSIRION_CORE_H_ */
+uint8_t generateCRCGeneric(const uint8_t* data, size_t count, uint8_t init,
+                           uint8_t polynomial);
+
+uint8_t generateCRC31_ff(const uint8_t* data, size_t count);
+
+uint8_t generateCRC31_00(const uint8_t* data, size_t count);
+
+/**
+ * @brief Generate a crc for data given a polynomial type
+ *
+ * @param data data to calculate CRC for
+ * @param count the array size of data
+ * @param poly CRC polynomal to use
+ */
+uint8_t generateCRC(const uint8_t* data, size_t count, CrcPolynomial type);
+
+#endif /* _SENSIRION_CRC_H_ */

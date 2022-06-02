@@ -34,6 +34,7 @@
 #include <stdlib.h>
 
 #include "Arduino.h"
+#include "SensirionCrc.h"
 #include "SensirionErrors.h"
 #include "SensirionI2CRxFrame.h"
 #include "SensirionI2CTxFrame.h"
@@ -72,7 +73,8 @@ uint16_t SensirionI2CCommunication::sendFrame(uint8_t address,
 uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
                                                  size_t numBytes,
                                                  SensirionI2CRxFrame& frame,
-                                                 TwoWire& i2cBus) {
+                                                 TwoWire& i2cBus,
+                                                 CrcPolynomial poly) {
     size_t readAmount;
     size_t i = 0;
 
@@ -105,8 +107,7 @@ uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
         frame._buffer[i++] = i2cBus.read();
         frame._buffer[i++] = i2cBus.read();
         uint8_t actualCRC = i2cBus.read();
-        uint8_t expectedCRC =
-            SensirionI2CTxFrame::_generateCRC(&frame._buffer[i - 2], 2);
+        uint8_t expectedCRC = generateCRC(&frame._buffer[i - 2], 2, poly);
         if (actualCRC != expectedCRC) {
             clearRxBuffer(i2cBus);
             return ReadError | CRCError;
