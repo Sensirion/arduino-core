@@ -71,11 +71,13 @@ class SensirionI2CCommunication {
      * @param numBytes Number of bytes to receive.
      * @param frame    Rx frame to store the received data in.
      * @param i2cBus   TwoWire object to communicate with the sensor.
+     * @param poly     CRC polynomal to use. Defaults to 0x31 with init 0xFF
      *
      * @return        NoError on success, an error code otherwise
      */
     static uint16_t receiveFrame(uint8_t address, size_t numBytes,
-                                 SensirionI2CRxFrame& frame, TwoWire& i2cBus);
+                                 SensirionI2CRxFrame& frame, TwoWire& i2cBus,
+                                 CrcPolynomial poly = CRC31_ff);
 };
 
 #endif /* SENSIRION_I2C_COMMUNICATION_H_ */
