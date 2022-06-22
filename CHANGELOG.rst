@@ -9,7 +9,12 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 `Unreleased`_
 -------------
 
+
+`0.6.0`_ 2022-06-22
+-------------------
+
 - Fix compiler warnings in SensirionErrors.cpp
+- Allow drivers to choose CRC function
 
 `0.5.3`_ 2021-10-19
 -------------------
@@ -141,7 +146,8 @@ Removed
 - Initial release
 
 
-.. _Unreleased: https://github.com/Sensirion/arduino-core/compare/0.5.3...main
+.. _Unreleased: https://github.com/Sensirion/arduino-core/compare/0.6.0...main
+.. _0.6.0: https://github.com/Sensirion/arduino-core/compare/0.6.0...0.5.3
 .. _0.5.3: https://github.com/Sensirion/arduino-core/compare/0.5.2...0.5.3
 .. _0.5.2: https://github.com/Sensirion/arduino-core/compare/0.5.1...0.5.2
 .. _0.5.1: https://github.com/Sensirion/arduino-core/compare/0.5.0...0.5.1
