@@ -97,9 +97,7 @@ void errorToString(uint16_t error, char errorMessage[],
                     strncpy(errorMessage, "Wrong CRC found", errorMessageSize);
                     return;
                 case LowLevelError::WrongNumberBytesError:
-                    strncpy(errorMessage,
-                            "The number of bytes to be read are "
-                            "not a multiple of 3",
+                    strncpy(errorMessage, "Number of bytes not a multiple of 3",
                             errorMessageSize);
                     return;
                 case LowLevelError::NotEnoughDataError:
@@ -107,11 +105,8 @@ void errorToString(uint16_t error, char errorMessage[],
                             errorMessageSize);
                     return;
                 case LowLevelError::InternalBufferSizeError:
-                    strncpy(
-                        errorMessage,
-                        "Can't execute this command on this board, internal "
-                        "I2C buffer is too small",
-                        errorMessageSize);
+                    strncpy(errorMessage, "Internal I2C buffer too small",
+                            errorMessageSize);
                     return;
             }
             break;
