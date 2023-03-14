@@ -73,8 +73,7 @@ uint16_t SensirionI2CCommunication::sendFrame(uint8_t address,
 uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
                                                  size_t numBytes,
                                                  SensirionI2CRxFrame& frame,
-                                                 TwoWire& i2cBus,
-                                                 CrcPolynomial poly) {
+                                                 TwoWire& i2cBus) {
     size_t readAmount;
     size_t i = 0;
 
@@ -107,7 +106,7 @@ uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
         frame._buffer[i++] = i2cBus.read();
         frame._buffer[i++] = i2cBus.read();
         uint8_t actualCRC = i2cBus.read();
-        uint8_t expectedCRC = generateCRC(&frame._buffer[i - 2], 2, poly);
+        uint8_t expectedCRC = generateCRC(&frame._buffer[i - 2], 2);
         if (actualCRC != expectedCRC) {
             clearRxBuffer(i2cBus);
             return ReadError | CRCError;

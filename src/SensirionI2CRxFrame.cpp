@@ -28,59 +28,24 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef SENSIRION_SHDLC_RX_FRAME_H_
-#define SENSIRION_SHDLC_RX_FRAME_H_
+
+#include "SensirionI2CRxFrame.h"
 
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "SensirionRxFrame.h"
-#include "SensirionShdlcCommunication.h"
+#include "SensirionErrors.h"
 
-/**
- * SenirionShdlcRxFrame - Class which decodes the through UART received data
- * into common data types. It contains a buffer which is filled by the
- * SensirionShdlcCommunication class. By calling the different decode function
- * inherited from the SensirionRxFrame base class the raw data can be decoded
- * into different data types. In addition to that it also stores the four
- * header bytes defined by the SHDLC protocol state, command, address,
- * datalength. These bytes can be read out by the corresponding getter method.
- */
-class SensirionShdlcRxFrame : public SensirionRxFrame {
+SensirionI2CRxFrame::SensirionI2CRxFrame(uint8_t buffer[], size_t bufferSize)
+    : _buffer(buffer), _bufferSize(bufferSize), _index(0), _numBytes(0) {
+}
 
-    friend class SensirionShdlcCommunication;
-
-  public:
-    /**
-     * Constructor
-     *
-     * @param buffer     Buffer in which the receive frame will be stored.
-     * @param bufferSize Number of bytes in the buffer for the receive frame.
-     */
-    SensirionShdlcRxFrame(uint8_t buffer[], size_t bufferSize)
-        : SensirionRxFrame(buffer, bufferSize){};
-
-    uint8_t getAddress(void) const {
-        return _address;
-    };
-
-    uint8_t getCommand(void) const {
-        return _command;
-    };
-
-    uint8_t getState(void) const {
-        return _state;
-    };
-
-    uint8_t getDataLength(void) const {
-        return _dataLength;
-    };
-
-  private:
-    uint8_t _address = 0;
-    uint8_t _command = 0;
-    uint8_t _state = 0;
-    uint8_t _dataLength = 0;
-};
-
-#endif /* SENSIRION_SHDLC_RX_FRAME_H_ */
+uint16_t SensirionI2CRxFrame::getUInt16(uint16_t& data) {
+    if (_numBytes < 2) {
+        return RxFrameError | NoDataError;
+    }
+    data = static_cast<uint16_t>(_buffer[_index++]) << 8;
+    data |= static_cast<uint16_t>(_buffer[_index++]);
+    _numBytes -= 2;
+    return NoError;
+}

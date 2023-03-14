@@ -34,31 +34,41 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "SensirionI2CCommunication.h"
-#include "SensirionRxFrame.h"
-
 /**
- * SenirionI2CRxFrame - Class which decodes the through I2C received data into
- * common data types. It contains a buffer which is filled by the
- * SensirionI2CCommunication class. By calling the different decode function
- * inherited from the SensirionRxFrame base class the raw data can be decoded
- * into different data types.
+ * SenirionRxFrame - Base class for SensirionShdlcRxFrame and
+ * SensirionI2cRxFrame. It decodes received data into common data types. The
+ * data is contained in a buffer which is filled by the one of the two
+ * communication classes. By calling the different decode function the raw data
+ * can be decoded into different data types.
  */
-class SensirionI2CRxFrame : public SensirionRxFrame {
+class SensirionI2CRxFrame {
 
     friend class SensirionI2CCommunication;
+    friend class SensirionShdlcCommunication;
 
   public:
     /**
      * Constructor
      *
-     * @param buffer     Buffer in which the receive frame will be
-     *                   stored.
+     * @param buffer     Buffer in which the receive frame will be stored.
      * @param bufferSize Number of bytes in the buffer for the receive frame.
-     *
      */
-    SensirionI2CRxFrame(uint8_t buffer[], size_t bufferSize)
-        : SensirionRxFrame(buffer, bufferSize){};
+    SensirionI2CRxFrame(uint8_t buffer[], size_t bufferSize);
+
+    /**
+     * getUInt16() - Get unsigned 16bit integer from the received data.
+     *
+     * @param data Memory to store unsigned 16bit integer in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t getUInt16(uint16_t& data);
+
+  private:
+    uint8_t* _buffer = 0;
+    size_t _bufferSize = 0;
+    size_t _index = 0;
+    size_t _numBytes = 0;
 };
 
 #endif /* SENSIRION_I2C_RX_FRAME_H_ */

@@ -33,11 +33,6 @@
 
 #include "SensirionCrc.h"
 #include "SensirionErrors.h"
-#include "SensirionRxFrame.h"
-
-#include "SensirionShdlcCommunication.h"
-#include "SensirionShdlcRxFrame.h"
-#include "SensirionShdlcTxFrame.h"
 
 #include "SensirionI2CCommunication.h"
 #include "SensirionI2CRxFrame.h"

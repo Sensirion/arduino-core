@@ -49,18 +49,15 @@ class SensirionI2CTxFrame {
 
   public:
     /**
-     * Factory to create a SensirionI2CTxFrame using a UInt8 command.
+     * Constructor
      *
-     * @param command    Command to add to the send frame.
      * @param buffer     Buffer in which the send frame will be stored.
      * @param bufferSize Number of bytes in the buffer for the send frame.
      * @param poly       CRC polynomal to use. Defaults to 0x31 with init 0xFF
      *
-     * @return the constructed SensirionI2CTxFrame.
+     * @deprecated Use createWithUInt16Command() instead
      */
-    static SensirionI2CTxFrame
-    createWithUInt8Command(uint8_t command, uint8_t buffer[], size_t bufferSize,
-                           CrcPolynomial poly = CRC31_ff);
+    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize);
 
     /**
      * Factory to create a SensirionI2CTxFrame using a UInt16 command.
@@ -72,21 +69,9 @@ class SensirionI2CTxFrame {
      *
      * @return the constructed SensirionI2CTxFrame.
      */
-    static SensirionI2CTxFrame
-    createWithUInt16Command(uint16_t command, uint8_t buffer[],
-                            size_t bufferSize, CrcPolynomial poly = CRC31_ff);
-
-    /**
-     * Constructor
-     *
-     * @param buffer     Buffer in which the send frame will be stored.
-     * @param bufferSize Number of bytes in the buffer for the send frame.
-     * @param poly       CRC polynomal to use. Defaults to 0x31 with init 0xFF
-     *
-     * @deprecated Use createWithUInt16Command() instead
-     */
-    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
-                        CrcPolynomial poly = CRC31_ff);
+    static SensirionI2CTxFrame createWithUInt16Command(uint16_t command,
+                                                       uint8_t buffer[],
+                                                       size_t bufferSize);
 
     /**
      * addCommand() - Add command to the send frame.
@@ -100,24 +85,6 @@ class SensirionI2CTxFrame {
     uint16_t addCommand(uint16_t command);
 
     /**
-     * addUInt32() - Add unsigned 32bit integer to the send frame.
-     *
-     * @param data Unsigned 32bit integer to add to the send frame.
-     *
-     * @return     NoError on success, an error code otherwise
-     */
-    uint16_t addUInt32(uint32_t data);
-
-    /**
-     * addInt32() - Add signed 32bit integer to the send frame.
-     *
-     * @param data Signed 32bit integer to add to the send frame.
-     *
-     * @return     NoError on success, an error code otherwise
-     */
-    uint16_t addInt32(int32_t data);
-
-    /**
      * addUInt16() - Add unsigned 16bit integer to the send frame.
      *
      * @param data Unsigned 16bit integer to add to the send frame.
@@ -126,64 +93,9 @@ class SensirionI2CTxFrame {
      */
     uint16_t addUInt16(uint16_t data);
 
-    /**
-     * addInt16() - Add signed 16bit integer to the send frame.
-     *
-     * @param data Signed 16bit integer to add to the send frame.
-     *
-     * @return     NoError on success, an error code otherwise
-     */
-    uint16_t addInt16(int16_t data);
-
-    /**
-     * addUInt8() - Add unsigned 8bit integer to the send frame.
-     *
-     * @param data Unsigned 8bit integer to add to the send frame.
-     *
-     * @return     NoError on success, an error code otherwise
-     */
-    uint16_t addUInt8(uint8_t data);
-
-    /**
-     * addInt8() - Add signed 8bit integer to the send frame.
-     *
-     * @param data Signed 8bit integer to add to the send frame.
-     *
-     * @return     NoError on success, an error code otherwise
-     */
-    uint16_t addInt8(int8_t data);
-
-    /**
-     * addBool() - Add boolean to the send frame.
-     *
-     * @param data Boolean to add to the send frame.
-     *
-     * @return     NoError on success, an error code otherwise
-     */
-    uint16_t addBool(bool data);
-
-    /**
-     * addFloat() - Add float to the send frame.
-     *
-     * @param data Float to add to the send frame.
-     *
-     * @return     NoError on success, an error code otherwise
-     */
-    uint16_t addFloat(float data);
-
-    /**
-     * addBytes() - Add byte array to the send frame.
-     *
-     * @param data       Byte array to add to the send frame.
-     * @param dataLength Number of bytes to add to the send frame.
-     *
-     * @return           NoError on success, an error code otherwise
-     */
-    uint16_t addBytes(const uint8_t data[], size_t dataLength);
-
   private:
     SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
-                        size_t numCommandBytes, CrcPolynomial poly = CRC31_ff);
+                        size_t numCommandBytes);
 
     uint16_t _addByte(uint8_t data);
 
@@ -191,7 +103,6 @@ class SensirionI2CTxFrame {
     size_t _bufferSize;
     size_t _index;
     size_t _numCommandBytes;
-    CrcPolynomial _polynomial_type;
 };
 
 #endif /* SENSIRION_I2C_TX_FRAME_H_ */
