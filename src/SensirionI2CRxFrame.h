@@ -64,6 +64,24 @@ class SensirionI2CRxFrame {
      */
     uint16_t getUInt16(uint16_t& data);
 
+    /**
+     * getUInt32() - Get unsigned 32bit integer from the received data.
+     *
+     * @param data Memory to store unsigned 32bit integer in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t getUInt32(uint32_t& data);
+
+    /**
+     * getFloat() - Get float from the received data.
+     *
+     * @param data Memory to store float in.
+     *
+     * @return     NoError on success, an error code otherwise
+     */
+    uint16_t getFloat(float& data);
+
   private:
     uint8_t* _buffer = 0;
     size_t _bufferSize = 0;

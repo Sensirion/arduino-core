@@ -49,3 +49,27 @@ uint16_t SensirionI2CRxFrame::getUInt16(uint16_t& data) {
     _numBytes -= 2;
     return NoError;
 }
+
+uint16_t SensirionI2CRxFrame::getUInt32(uint32_t& data) {
+    if (_numBytes < 4) {
+        return RxFrameError | NoDataError;
+    }
+    data = static_cast<uint32_t>(_buffer[_index++]) << 24;
+    data |= static_cast<uint32_t>(_buffer[_index++]) << 16;
+    _index++;
+    data |= static_cast<uint32_t>(_buffer[_index++]) << 8;
+    data |= static_cast<uint32_t>(_buffer[_index++]);
+    _index++;
+    _numBytes -= 6;
+    return NoError;
+}
+
+uint16_t SensirionI2CRxFrame::getFloat(float& data) {
+    union {
+        uint32_t uInt32Data;
+        float floatData;
+    } convert;
+    uint16_t error = getUInt32(convert.uInt32Data);
+    data = convert.floatData;
+    return error;
+}
