@@ -43,19 +43,6 @@ SensirionI2CTxFrame::SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
       _numCommandBytes(numCommandBytes) {
 }
 
-SensirionI2CTxFrame::SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize)
-    : SensirionI2CTxFrame(buffer, bufferSize, 2) {
-}
-
-SensirionI2CTxFrame
-SensirionI2CTxFrame::createWithUInt16Command(uint16_t command, uint8_t buffer[],
-                                             size_t bufferSize) {
-    SensirionI2CTxFrame instance = SensirionI2CTxFrame(buffer, bufferSize, 2);
-    instance._buffer[0] = static_cast<uint8_t>((command & 0xFF00) >> 8);
-    instance._buffer[1] = static_cast<uint8_t>((command & 0x00FF) >> 0);
-    return instance;
-}
-
 uint16_t SensirionI2CTxFrame::addCommand(uint16_t command) {
     if (_bufferSize < 2) {
         return TxFrameError | BufferSizeError;

@@ -57,21 +57,8 @@ class SensirionI2CTxFrame {
      *
      * @deprecated Use createWithUInt16Command() instead
      */
-    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize);
-
-    /**
-     * Factory to create a SensirionI2CTxFrame using a UInt16 command.
-     *
-     * @param command    Command to add to the send frame.
-     * @param buffer     Buffer in which the send frame will be stored.
-     * @param bufferSize Number of bytes in the buffer for the send frame.
-     * @param poly       CRC polynomal to use. Defaults to 0x31 with init 0xFF
-     *
-     * @return the constructed SensirionI2CTxFrame.
-     */
-    static SensirionI2CTxFrame createWithUInt16Command(uint16_t command,
-                                                       uint8_t buffer[],
-                                                       size_t bufferSize);
+    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
+                        size_t numCommandBytes = 2);
 
     /**
      * addCommand() - Add command to the send frame.
@@ -94,9 +81,6 @@ class SensirionI2CTxFrame {
     uint16_t addUInt16(uint16_t data);
 
   private:
-    SensirionI2CTxFrame(uint8_t buffer[], size_t bufferSize,
-                        size_t numCommandBytes);
-
     uint16_t _addByte(uint8_t data);
 
     uint8_t* _buffer;
