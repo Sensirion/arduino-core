@@ -76,6 +76,13 @@ class SensirionI2CCommunication {
      */
     static uint16_t receiveFrame(uint8_t address, size_t numBytes,
                                  SensirionI2CRxFrame& frame, TwoWire& i2cBus);
+
+  private:
+    static uint16_t _receiveWithCrc(uint8_t address, size_t numBytes,
+                                    SensirionI2CRxFrame& frame,
+                                    TwoWire& i2cBus);
+    static uint16_t _receiveByte(uint8_t address, SensirionI2CRxFrame& frame,
+                                 TwoWire& i2cBus);
 };
 
 #endif /* SENSIRION_I2C_COMMUNICATION_H_ */
