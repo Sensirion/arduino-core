@@ -71,18 +71,20 @@ class SensirionI2CCommunication {
      * @param numBytes Number of bytes to receive.
      * @param frame    Rx frame to store the received data in.
      * @param i2cBus   TwoWire object to communicate with the sensor.
+     * @param checksum Boolean, calculate crc checksum if true, don't if false.
      *
      * @return        NoError on success, an error code otherwise
      */
     static uint16_t receiveFrame(uint8_t address, size_t numBytes,
-                                 SensirionI2CRxFrame& frame, TwoWire& i2cBus);
+                                 SensirionI2CRxFrame& frame, TwoWire& i2cBus,
+                                 bool checksum = true);
 
   private:
     static uint16_t _receiveWithCrc(uint8_t address, size_t numBytes,
                                     SensirionI2CRxFrame& frame,
                                     TwoWire& i2cBus);
-    static uint16_t _receiveByte(uint8_t address, SensirionI2CRxFrame& frame,
-                                 TwoWire& i2cBus);
+    static uint16_t _receiveBytes(uint8_t address, size_t numBytes,
+                                  SensirionI2CRxFrame& frame, TwoWire& i2cBus);
 };
 
 #endif /* SENSIRION_I2C_COMMUNICATION_H_ */

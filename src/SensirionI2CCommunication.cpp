@@ -73,9 +73,10 @@ uint16_t SensirionI2CCommunication::sendFrame(uint8_t address,
 uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
                                                  size_t numBytes,
                                                  SensirionI2CRxFrame& frame,
-                                                 TwoWire& i2cBus) {
-    if (numBytes == 1) {
-        _receiveByte(address, frame, i2cBus);
+                                                 TwoWire& i2cBus,
+                                                 bool checksum) {
+    if (!checksum) {
+        _receiveBytes(address, numBytes, frame, i2cBus);
     } else {
         _receiveWithCrc(address, numBytes, frame, i2cBus);
     }
@@ -128,16 +129,19 @@ uint16_t SensirionI2CCommunication::_receiveWithCrc(uint8_t address,
     return NoError;
 }
 
-uint16_t SensirionI2CCommunication::_receiveByte(uint8_t address,
-                                                 SensirionI2CRxFrame& frame,
-                                                 TwoWire& i2cBus) {
+uint16_t SensirionI2CCommunication::_receiveBytes(uint8_t address,
+                                                  size_t numBytes,
+                                                  SensirionI2CRxFrame& frame,
+                                                  TwoWire& i2cBus) {
     size_t readAmount;
-    readAmount = i2cBus.requestFrom(address, 1, static_cast<uint8_t>(true));
-    if (readAmount != 1) {
+    readAmount =
+        i2cBus.requestFrom(address, numBytes, static_cast<uint8_t>(true));
+    if (readAmount != numBytes) {
         return ReadError | NotEnoughDataError;
     }
-
-    frame._buffer[0] = i2cBus.read();
+    for (uint8_t i = 0; i < numBytes; i++) {
+        frame._buffer[i] = i2cBus.read();
+    }
 
     return NoError;
 }
