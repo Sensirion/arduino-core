@@ -76,15 +76,7 @@ class SensirionI2CCommunication {
      * @return        NoError on success, an error code otherwise
      */
     static uint16_t receiveFrame(uint8_t address, size_t numBytes,
-                                 SensirionI2CRxFrame& frame, TwoWire& i2cBus,
-                                 bool checksum = true);
-
-  private:
-    static uint16_t _receiveWithCrc(uint8_t address, size_t numBytes,
-                                    SensirionI2CRxFrame& frame,
-                                    TwoWire& i2cBus);
-    static uint16_t _receiveBytes(uint8_t address, size_t numBytes,
-                                  SensirionI2CRxFrame& frame, TwoWire& i2cBus);
+                                 SensirionI2CRxFrame& frame, TwoWire& i2cBus);
 };
 
 #endif /* SENSIRION_I2C_COMMUNICATION_H_ */
