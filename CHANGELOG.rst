@@ -9,6 +9,8 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 `Unreleased`_
 -------------
 
+- Reduce error message size to 64 bytes
+
 
 `0.6.0`_ 2022-06-22
 -------------------
