@@ -10,6 +10,7 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 -------------
 
 - Reduce error message size to 64 bytes
+- Fix i2c read buffer limitation
 
 
 `0.6.0`_ 2022-06-22
