@@ -75,8 +75,6 @@ uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
                                                  SensirionI2CRxFrame& frame,
                                                  TwoWire& i2cBus,
                                                  CrcPolynomial poly) {
-    size_t readAmount;
-    size_t i = 0;
 
 #ifdef I2C_BUFFER_LENGTH
     const uint8_t sizeBuffer =
@@ -94,26 +92,34 @@ uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
     if ((numBytes / 3) * 2 > frame._bufferSize) {
         return ReadError | BufferSizeError;
     }
-    if (numBytes > sizeBuffer) {
-        return ReadError | InternalBufferSizeError;
-    }
-
-    readAmount = i2cBus.requestFrom(address, static_cast<uint8_t>(numBytes),
-                                    static_cast<uint8_t>(true));
-    if (numBytes != readAmount) {
-        return ReadError | NotEnoughDataError;
-    }
+    size_t i = 0;
+    int16_t remaining = numBytes;
+    uint8_t bytesToRead = sizeBuffer;
+    bool stop = bytesToRead >= remaining;
     do {
-        frame._buffer[i++] = i2cBus.read();
-        frame._buffer[i++] = i2cBus.read();
-        uint8_t actualCRC = i2cBus.read();
-        uint8_t expectedCRC = generateCRC(&frame._buffer[i - 2], 2, poly);
-        if (actualCRC != expectedCRC) {
-            clearRxBuffer(i2cBus);
-            return ReadError | CRCError;
+        if (sizeBuffer >= remaining) {
+            stop = true;
+            bytesToRead = remaining;
         }
-        readAmount -= 3;
-    } while (readAmount > 0);
+        uint8_t available = i2cBus.requestFrom(address, bytesToRead,
+                                               static_cast<uint8_t>(stop));
+        if (bytesToRead != available) {
+            return ReadError;
+        }
+        while (available > 0) {
+            frame._buffer[i++] = i2cBus.read();
+            frame._buffer[i++] = i2cBus.read();
+            uint8_t actualCRC = i2cBus.read();
+            uint8_t expectedCRC = generateCRC(&frame._buffer[i - 2], 2, poly);
+            if (actualCRC != expectedCRC) {
+                clearRxBuffer(i2cBus);
+                return ReadError | CRCError;
+            }
+            available -= 3;
+        }
+        remaining -= bytesToRead;
+
+    } while (remaining > 0);
     frame._numBytes = i;
     return NoError;
 }
