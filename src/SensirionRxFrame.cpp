@@ -107,7 +107,7 @@ uint16_t SensirionRxFrame::getFloat(float& data) {
     union {
         uint32_t uInt32Data;
         float floatData;
-    } convert = { 0 };
+    } convert = {0};
     uint16_t error = getUInt32(convert.uInt32Data);
     data = convert.floatData;
     return error;
