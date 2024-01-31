@@ -38,8 +38,8 @@
 #include "SensirionShdlcRxFrame.h"
 #include "SensirionShdlcTxFrame.h"
 
-static uint16_t readByte(uint8_t& data, Stream& serial, unsigned long startTime,
-                         unsigned long timeoutMicros) {
+static uint16_t readByte(uint8_t& data, Stream& serial, uint32_t startTime,
+                         uint32_t timeoutMicros) {
     do {
         if (micros() - startTime > timeoutMicros) {
             return ReadError | TimeoutError;
@@ -49,9 +49,8 @@ static uint16_t readByte(uint8_t& data, Stream& serial, unsigned long startTime,
     return NoError;
 }
 
-static uint16_t unstuffByte(uint8_t& data, Stream& serial,
-                            unsigned long startTime,
-                            unsigned long timeoutMicros) {
+static uint16_t unstuffByte(uint8_t& data, Stream& serial, uint32_t startTime,
+                            uint32_t timeoutMicros) {
     uint16_t error = readByte(data, serial, startTime, timeoutMicros);
     if (error) {
         return error;
@@ -75,9 +74,10 @@ uint16_t SensirionShdlcCommunication::sendFrame(SensirionShdlcTxFrame& frame,
     return NoError;
 }
 
-uint16_t SensirionShdlcCommunication::receiveFrame(
-    SensirionShdlcRxFrame& frame, Stream& serial, unsigned long timeoutMicros) {
-    unsigned long startTime = micros();
+uint16_t SensirionShdlcCommunication::receiveFrame(SensirionShdlcRxFrame& frame,
+                                                   Stream& serial,
+                                                   uint32_t timeoutMicros) {
+    uint32_t startTime = micros();
     uint16_t error;
     uint8_t dataLength;
     uint8_t current = 0;
@@ -163,7 +163,7 @@ uint16_t SensirionShdlcCommunication::receiveFrame(
 
 uint16_t SensirionShdlcCommunication::sendAndReceiveFrame(
     Stream& serial, SensirionShdlcTxFrame& txFrame,
-    SensirionShdlcRxFrame& rxFrame, unsigned long rxTimeoutMicros) {
+    SensirionShdlcRxFrame& rxFrame, uint32_t rxTimeoutMicros) {
     uint16_t error;
     error = SensirionShdlcCommunication::sendFrame(txFrame, serial);
     if (error) {
