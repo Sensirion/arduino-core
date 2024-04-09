@@ -9,6 +9,10 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 `Unreleased`_
 -------------
 
+
+`0.7.0`_ 2024-04-09
+-------------------
+
 - Reduce error message size to 64 bytes
 - Fix i2c read buffer limitation
 
@@ -149,7 +153,8 @@ Removed
 - Initial release
 
 
-.. _Unreleased: https://github.com/Sensirion/arduino-core/compare/0.6.0...main
+.. _Unreleased: https://github.com/Sensirion/arduino-core/compare/0.7.0...main
+.. _0.7.0: https://github.com/Sensirion/arduino-core/compare/0.7.0...0.6.0
 .. _0.6.0: https://github.com/Sensirion/arduino-core/compare/0.6.0...0.5.3
 .. _0.5.3: https://github.com/Sensirion/arduino-core/compare/0.5.2...0.5.3
 .. _0.5.2: https://github.com/Sensirion/arduino-core/compare/0.5.1...0.5.2
