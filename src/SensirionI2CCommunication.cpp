@@ -104,7 +104,7 @@ uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
         uint8_t available = i2cBus.requestFrom(address, bytesToRead,
                                                static_cast<uint8_t>(stop));
         if (bytesToRead != available) {
-            return ReadError;
+            return ReadError | NotEnoughDataError;
         }
         while (available > 0) {
             frame._buffer[i++] = i2cBus.read();

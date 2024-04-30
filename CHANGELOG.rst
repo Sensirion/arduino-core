@@ -9,6 +9,12 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 `Unreleased`_
 -------------
 
+`0.7.1`_ 2024-04-30
+-------------------
+
+- Add undefined low level error to avoid fallback to "Frame already contains data" error.
+- Fix missing low level error when not enough data available for I2C.
+
 
 `0.7.0`_ 2024-04-09
 -------------------
