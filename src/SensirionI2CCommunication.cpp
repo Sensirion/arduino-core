@@ -83,7 +83,7 @@ uint16_t SensirionI2CCommunication::receiveFrame(uint8_t address,
     const uint8_t sizeBuffer =
         (static_cast<uint8_t>(BUFFER_LENGTH) / static_cast<uint8_t>(3)) * 3;
 #else
-    const uint8_t sizeBuffer = 30;
+    const uint8_t sizeBuffer = 48;
 #endif
 
     if (numBytes % 3) {
