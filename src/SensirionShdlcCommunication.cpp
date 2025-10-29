@@ -42,7 +42,8 @@ static uint16_t readByte(uint8_t& data, Stream& serial, uint32_t startTime,
                          uint32_t timeoutMicros) {
     do {
         if (micros() - startTime > timeoutMicros) {
-            return ReadError | TimeoutError;
+            return static_cast<uint16_t>(ReadError) |
+                   static_cast<uint8_t>(TimeoutError);
         }
     } while (!serial.available());
     data = serial.read();
@@ -69,7 +70,8 @@ uint16_t SensirionShdlcCommunication::sendFrame(SensirionShdlcTxFrame& frame,
                                                 Stream& serial) {
     size_t writtenBytes = serial.write(&frame._buffer[0], frame._index);
     if (writtenBytes != frame._index) {
-        return WriteError | SerialWriteError;
+        return static_cast<uint16_t>(WriteError) |
+               static_cast<uint8_t>(SerialWriteError);
     }
     return NoError;
 }
@@ -83,7 +85,8 @@ uint16_t SensirionShdlcCommunication::receiveFrame(SensirionShdlcRxFrame& frame,
     uint8_t current = 0;
 
     if (frame._numBytes) {
-        return ReadError | NonemptyFrameError;
+        return static_cast<uint16_t>(ReadError) |
+               static_cast<uint8_t>(NonemptyFrameError);
     }
 
     // Wait for start byte and ignore all other bytes in case a partial frame
@@ -121,14 +124,16 @@ uint16_t SensirionShdlcCommunication::receiveFrame(SensirionShdlcRxFrame& frame,
         frame._address + frame._command + frame._state + dataLength;
 
     if (dataLength > frame._bufferSize) {
-        return RxFrameError | BufferSizeError;
+        return static_cast<uint16_t>(RxFrameError) |
+               static_cast<uint8_t>(BufferSizeError);
     }
 
-    // An error frame does not have any data eventhough the value of "dataLength" is not zero.
-    // Therefore, only read data from the buffer if the frame state is 0, i.e, the frame is not of an error frame.
-    
-    if(frame._state == 0 ){
-        for(size_t i = 0; i < dataLength; i++){ 
+    // An error frame does not have any data eventhough the value of
+    // "dataLength" is not zero. Therefore, only read data from the buffer if
+    // the frame state is 0, i.e, the frame is not of an error frame.
+
+    if (frame._state == 0) {
+        for (size_t i = 0; i < dataLength; i++) {
             error = unstuffByte(current, serial, startTime, timeoutMicros);
             if (error) {
                 return error;
@@ -145,7 +150,8 @@ uint16_t SensirionShdlcCommunication::receiveFrame(SensirionShdlcRxFrame& frame,
         return error;
     }
     if (expectedChecksum != actualChecksum) {
-        return ReadError | ChecksumError;
+        return static_cast<uint16_t>(ReadError) |
+               static_cast<uint8_t>(ChecksumError);
     }
 
     uint8_t stop;
@@ -154,7 +160,8 @@ uint16_t SensirionShdlcCommunication::receiveFrame(SensirionShdlcRxFrame& frame,
         return error;
     }
     if (stop != 0x7e) {
-        return ReadError | StopByteError;
+        return static_cast<uint16_t>(ReadError) |
+               static_cast<uint8_t>(StopByteError);
     }
     if (frame._state & 0x7F) {
         return ExecutionError | frame._state;
@@ -178,10 +185,12 @@ uint16_t SensirionShdlcCommunication::sendAndReceiveFrame(
         return error;
     }
     if (rxFrame.getCommand() != txFrame.getCommand()) {
-        return RxFrameError | RxCommandError;
+        return static_cast<uint16_t>(RxFrameError) |
+               static_cast<uint8_t>(RxCommandError);
     }
     if (rxFrame.getAddress() != txFrame.getAddress()) {
-        return RxFrameError | RxAddressError;
+        return static_cast<uint16_t>(RxFrameError) |
+               static_cast<uint8_t>(RxAddressError);
     }
     return NoError;
 }
