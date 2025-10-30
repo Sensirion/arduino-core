@@ -8,8 +8,9 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 
 `Unreleased`_
 -------------
+- Fix compiler warnings
 - update to SensirionShdlcTxFrame::begin so the buffer is always filled from position 0.
-. update to SensirionShdlcCommunication::receiveFrame -  if an error frame is recieved, the data part of the frame should not be read even if the length is not 0.
+- update to SensirionShdlcCommunication::receiveFrame -  if an error frame is recieved, the data part of the frame should not be read even if the length is not 0.
 
 `0.7.1`_ 2024-04-30
 -------------------
