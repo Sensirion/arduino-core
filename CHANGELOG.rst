@@ -9,6 +9,8 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 `Unreleased`_
 -------------
 
+- Fix bug in SensirionShdlcTxFrame::begin that caused communication timeouts.
+
 `0.7.2`_ 2025-11-04
 -------------------
 
